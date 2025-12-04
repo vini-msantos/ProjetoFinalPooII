@@ -12,19 +12,6 @@ public class GuiApp implements App {
 
     @Override
     public void run() {
-        ProductManagerView pmv = new ProductManagerView();
-        FeeManagerView fmv = new FeeManagerView();
-    }
-
-    private JFrame menu() {
-        JFrame frame = new JFrame("Menu");
-        frame.setSize(400, 500);
-        frame.setVisible(true);
-
-        Box box = Box.createVerticalBox();
-
-
-
-        return frame;
+        Menu menu = new Menu();
     }
 }

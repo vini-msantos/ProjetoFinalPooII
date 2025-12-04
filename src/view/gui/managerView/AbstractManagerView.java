@@ -4,7 +4,7 @@ import model.item.AbstractItem;
 import model.manager.AbstractManager;
 import model.sorting.Sorter;
 import model.util.Status;
-import view.gui.GenericDialogs;
+import view.gui.util.GenericDialogs;
 import view.gui.ItemViewPanel;
 
 import javax.swing.*;
@@ -24,11 +24,13 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
     private JButton saveButton;
     private ItemViewPanel<T> itemViewPanel;
     private boolean unsavedChanges = false;
+    private final String itemName;
 
     public AbstractManagerView(AbstractManager<T> manager, String itemName, Sorter<T>[] sorters) {
         super(itemName + " Manager");
 
         this.manager = manager;
+        this.itemName = itemName;
 
         this.setContentPane(panel);
 
@@ -48,13 +50,10 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
         deleteItemButton.addActionListener(_ -> {
             List<T> selected = itemViewPanel.getSelectedValuesList();
             if (selected == null) {
-                JOptionPane.showMessageDialog(this, "Select items to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Select one or more " + itemName.toLowerCase() + "s to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            int confirm = JOptionPane.showConfirmDialog(this,
-                    "You are about to delete " + selected.size() + " item(s), proceed with operation?",
-                    "Confirm delete", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
+            if (GenericDialogs.confirmDelete(this, selected.size())) {
                 for (T item : selected) {
                     manager.remove(item.getId());
                 }
@@ -74,7 +73,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
         editItemButton.addActionListener(_ -> {
             T selected = itemViewPanel.getSelectedValue();
             if (selected == null) {
-                JOptionPane.showMessageDialog(this, "Select an item to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Select a " + itemName.toLowerCase() + " to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             T updated = editItemPopIp(selected);

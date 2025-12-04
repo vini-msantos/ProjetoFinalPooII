@@ -1,7 +1,8 @@
-package view.gui;
+package view.gui.itemDialog;
 
 import model.item.Fee;
 import org.jetbrains.annotations.Nullable;
+import view.gui.util.FormattedFieldFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,19 +29,17 @@ public class FeeDialog extends JDialog {
 
         this.idCounter = idCounter;
 
-        String title;
         String templateName = null;
         Double templatePercentage = null;
-        if (template == null) {
-            title = "Creating fee with ID " + idCounter;
-        } else {
-            title = "Editing fee with ID " + idCounter;
-            buttonCreate.setText("Edit");
+        if (template != null) {
             templateName = template.getName();
             templatePercentage = template.getPercentage().doubleValue();
+            buttonCreate.setText("Edit");
         }
 
-        mainPanel.setBorder(BorderFactory.createTitledBorder(title));
+        String title = (template == null) ? "Creating" : "Editing";
+        mainPanel.setBorder(BorderFactory.createTitledBorder(title + " fee of ID " + idCounter));
+        setTitle(title + " Fee");
 
         FormattedFieldFactory.editNameField(nameField, templateName);
         FormattedFieldFactory.editPercentageField(percentageField, templatePercentage);

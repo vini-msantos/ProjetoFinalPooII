@@ -1,8 +1,9 @@
-package view.gui;
+package view.gui.itemDialog;
 
 import model.item.Product;
 import model.item.ProductWithQuantity;
 import org.jetbrains.annotations.Nullable;
+import view.gui.util.FormattedFieldFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,19 +33,17 @@ public class ProductDialog extends JDialog {
         this.withQuantity = withQuantity;
         this.idCounter = idCounter;
 
-        String title;
         String templateName = null;
         Double templatePrice = null;
-        if (template == null) {
-            title = "Creating product with ID " + idCounter;
-        } else {
-            title = "Editing product with ID " + idCounter;
-            buttonCreate.setText("Edit");
+        if (template != null) {
             templateName = template.getName();
             templatePrice = template.getPrice().doubleValue();
+            buttonCreate.setText("Edit");
         }
 
-        mainPanel.setBorder(BorderFactory.createTitledBorder(title));
+        String title = (template == null) ? "Creating" : "Editing";
+        mainPanel.setBorder(BorderFactory.createTitledBorder(title + " product of ID " + idCounter));
+        setTitle(title + " Product");
 
         FormattedFieldFactory.editNameField(nameField, templateName);
         FormattedFieldFactory.editPriceField(priceField, templatePrice);

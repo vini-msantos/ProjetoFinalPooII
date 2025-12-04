@@ -1,4 +1,4 @@
-package view.gui;
+package view.gui.util;
 
 import org.jetbrains.annotations.Nullable;
 

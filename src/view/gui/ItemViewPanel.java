@@ -42,11 +42,7 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         listModel.addAll(newList);
     }
 
-    public JPanel getPanel() {
-        return listPanel;
-    }
-
-    public void setupListeners() {
+    private void setupListeners() {
         ActionListener changeSortOptionListener = _ -> {
             Sorter<T> sortOption = (Sorter<T>) sortOptionBox.getSelectedItem();
             boolean reversed = reversedCheckBox.isSelected();

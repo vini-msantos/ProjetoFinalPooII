@@ -1,4 +1,4 @@
-package view.gui;
+package view.gui.util;
 
 import javax.swing.text.DefaultFormatter;
 import java.text.ParseException;

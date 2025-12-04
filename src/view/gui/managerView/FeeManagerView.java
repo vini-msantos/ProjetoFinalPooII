@@ -4,7 +4,7 @@ import model.item.Fee;
 import model.manager.FeeManager;
 import model.sorting.FeeSortBy;
 import org.jetbrains.annotations.NotNull;
-import view.gui.FeeDialog;
+import view.gui.itemDialog.FeeDialog;
 
 public class FeeManagerView extends AbstractManagerView<Fee> {
     public FeeManagerView() {
