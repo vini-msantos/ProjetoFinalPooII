@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 
 public class ProductDialog extends JDialog {
     private JPanel contentPane;
@@ -17,7 +16,6 @@ public class ProductDialog extends JDialog {
     private JPanel mainPanel;
     private JTextField nameField;
     private JFormattedTextField priceField;
-    private JLabel productIdLabel;
     private JFormattedTextField quantityField;
     private JLabel quantityLabel;
     private Product product = null;
@@ -48,37 +46,14 @@ public class ProductDialog extends JDialog {
 
         mainPanel.setBorder(BorderFactory.createTitledBorder(title));
 
-        nameField.setText(templateName);
+        FormattedFieldFactory.editNameField(nameField, templateName);
         FormattedFieldFactory.editPriceField(priceField, templatePrice);
         FormattedFieldFactory.editQuantityField(quantityField, templateQuantity);
 
         quantityLabel.setVisible(withQuantity);
         quantityField.setVisible(withQuantity);
 
-        buttonCreate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCreate();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        setupListeners();
 
         pack();
         setVisible(true);
@@ -101,6 +76,27 @@ public class ProductDialog extends JDialog {
         }
 
         dispose();
+    }
+
+    private void setupListeners() {
+        buttonCreate.addActionListener(_ -> onCreate());
+
+        buttonCancel.addActionListener(_ -> onCancel());
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        if (withQuantity) {
+            quantityField.addActionListener(_ -> onCreate());
+        } else {
+            priceField.addActionListener(_ -> onCreate());
+        }
+
+        contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onCancel() {

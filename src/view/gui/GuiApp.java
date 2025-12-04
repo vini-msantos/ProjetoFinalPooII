@@ -1,6 +1,7 @@
 package view.gui;
 
 import view.App;
+import view.gui.managerView.FeeManagerView;
 import view.gui.managerView.ProductManagerView;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class GuiApp implements App {
     @Override
     public void run() {
         ProductManagerView pmv = new ProductManagerView();
+        FeeManagerView fmv = new FeeManagerView();
     }
 
     private JFrame menu() {

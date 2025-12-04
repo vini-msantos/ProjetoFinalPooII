@@ -4,13 +4,12 @@ import model.item.Product;
 import model.manager.ProductManager;
 import model.sorting.ProductSortBy;
 import org.jetbrains.annotations.NotNull;
+import view.gui.ItemViewPanel;
 import view.gui.ProductDialog;
-
-import java.util.List;
 
 public class ProductManagerView extends AbstractManagerView<Product> {
     public ProductManagerView() {
-        super(ProductManager.getInstance(), List.of(ProductSortBy.values()), "Product Manager");
+        super(ProductManager.getInstance(), "Product", ProductSortBy.values());
     }
 
     @Override
