@@ -77,8 +77,6 @@ public class CreateBillDialog extends JDialog {
 
         Client client = cm.get(id);
         bill = new Bill(BillManager.getInstance().getIdCounter(), client);
-
-        System.out.println(bill);
         dispose();
     }
 
