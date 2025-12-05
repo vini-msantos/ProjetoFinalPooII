@@ -18,7 +18,7 @@ public class ProductManagerView extends AbstractManagerView<Product> {
     }
 
     @Override
-    protected Product editItemPopIp(@NotNull Product originalItem) {
+    protected Product editItemPopUp(@NotNull Product originalItem) {
         ProductDialog dialog = new ProductDialog(this, originalItem.getId(), originalItem, false, null);
         return dialog.getProduct();
     }

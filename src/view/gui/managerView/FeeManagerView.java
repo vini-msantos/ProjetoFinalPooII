@@ -18,7 +18,7 @@ public class FeeManagerView extends AbstractManagerView<Fee> {
     }
 
     @Override
-    protected Fee editItemPopIp(@NotNull Fee originalItem) {
+    protected Fee editItemPopUp(@NotNull Fee originalItem) {
         FeeDialog dialog = new FeeDialog(this, originalItem.getId(), originalItem);
         return dialog.getFee();
     }

@@ -3,7 +3,7 @@ package view.gui.itemDialog;
 import model.item.Product;
 import model.item.ProductWithQuantity;
 import org.jetbrains.annotations.Nullable;
-import view.gui.util.FormattedFieldFactory;
+import view.gui.util.FieldFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,9 +45,9 @@ public class ProductDialog extends JDialog {
         mainPanel.setBorder(BorderFactory.createTitledBorder(title + " product of ID " + idCounter));
         setTitle(title + " Product");
 
-        FormattedFieldFactory.editNameField(nameField, templateName);
-        FormattedFieldFactory.editPriceField(priceField, templatePrice);
-        FormattedFieldFactory.editQuantityField(quantityField, templateQuantity);
+        FieldFactory.editNameField(nameField, templateName);
+        FieldFactory.editPriceField(priceField, templatePrice);
+        FieldFactory.editQuantityField(quantityField, templateQuantity);
 
         quantityLabel.setVisible(withQuantity);
         quantityField.setVisible(withQuantity);
@@ -59,7 +59,11 @@ public class ProductDialog extends JDialog {
     }
 
     private void onCreate() {
-        if (nameField.getText().isBlank() || !priceField.isValid() || (withQuantity && !quantityField.isValid())) {
+        if (
+                nameField.getText().isBlank()
+                || !FieldFactory.validPrice(priceField)
+                || (withQuantity && !FieldFactory.validQuantity(quantityField))
+        ) {
             JOptionPane.showMessageDialog(this, "Fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

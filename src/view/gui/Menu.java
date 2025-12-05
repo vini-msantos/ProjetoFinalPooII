@@ -1,5 +1,6 @@
 package view.gui;
 
+import view.gui.managerView.BillManagerView;
 import view.gui.managerView.ClientManagerView;
 import view.gui.managerView.FeeManagerView;
 import view.gui.managerView.ProductManagerView;
@@ -21,6 +22,7 @@ public class Menu extends JFrame {
         setupListeners();
 
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -28,5 +30,6 @@ public class Menu extends JFrame {
         productManagerButton.addActionListener(_ -> new ProductManagerView());
         feeManagerButton.addActionListener(_ -> new FeeManagerView());
         clientManagerButton.addActionListener(_ -> new ClientManagerView());
+        billManagerButton.addActionListener(_ -> new BillManagerView());
     }
 }

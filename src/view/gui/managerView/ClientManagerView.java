@@ -18,7 +18,7 @@ public class ClientManagerView extends AbstractManagerView<Client> {
     }
 
     @Override
-    protected Client editItemPopIp(@NotNull Client originalItem) {
+    protected Client editItemPopUp(@NotNull Client originalItem) {
         ClientDialog dialog = new ClientDialog(this, originalItem.getId(), originalItem);
         return dialog.getClient();
     }

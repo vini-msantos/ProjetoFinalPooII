@@ -4,34 +4,35 @@ import model.item.AbstractItem;
 import model.manager.AbstractManager;
 import model.sorting.Sorter;
 import view.gui.ItemViewPanel;
+import view.gui.managerView.AbstractManagerView;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.function.Supplier;
 
 public class ItemSearchDialog<T extends AbstractItem> extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private ItemViewPanel<T> itemView;
-    private JButton openManagerButton;
     private T selected;
 
-    public ItemSearchDialog(AbstractManager<T> manager, Sorter<T>[] sorters, Runnable openManager) {
+    public ItemSearchDialog(AbstractManager<T> manager, Sorter<T>[] sorters) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        setupListeners(openManager);
+        setupListeners();
         itemView.setupItemView(manager, sorters);
 
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private void setupListeners(Runnable openManager) {
+    private void setupListeners() {
         buttonOK.addActionListener(_ -> onSelect());
         buttonCancel.addActionListener(_ -> onCancel());
-        openManagerButton.addActionListener(_ -> openManager.run());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {

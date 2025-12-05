@@ -2,7 +2,7 @@ package view.gui.itemDialog;
 
 import model.item.Client;
 import org.jetbrains.annotations.Nullable;
-import view.gui.util.FormattedFieldFactory;
+import view.gui.util.FieldFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,8 +40,8 @@ public class ClientDialog extends JDialog {
         mainPanel.setBorder(BorderFactory.createTitledBorder(title + " client of ID " + idCounter));
         setTitle(title + " Client");
 
-        FormattedFieldFactory.editNameField(nameField, templateName);
-        FormattedFieldFactory.editNameField(phoneNumberField, templatePhoneNumber);
+        FieldFactory.editNameField(nameField, templateName);
+        FieldFactory.editNameField(phoneNumberField, templatePhoneNumber);
 
         setupListeners();
 

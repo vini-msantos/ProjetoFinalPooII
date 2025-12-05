@@ -2,7 +2,7 @@ package view.gui.itemDialog;
 
 import model.item.Fee;
 import org.jetbrains.annotations.Nullable;
-import view.gui.util.FormattedFieldFactory;
+import view.gui.util.FieldFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,8 +41,8 @@ public class FeeDialog extends JDialog {
         mainPanel.setBorder(BorderFactory.createTitledBorder(title + " fee of ID " + idCounter));
         setTitle(title + " Fee");
 
-        FormattedFieldFactory.editNameField(nameField, templateName);
-        FormattedFieldFactory.editPercentageField(percentageField, templatePercentage);
+        FieldFactory.editNameField(nameField, templateName);
+        FieldFactory.editPercentageField(percentageField, templatePercentage);
 
         setupListeners();
 
@@ -66,7 +66,7 @@ public class FeeDialog extends JDialog {
     }
 
     private void onCreate() {
-        if (nameField.getText().isBlank() || !percentageField.isValid()) {
+        if (nameField.getText().isBlank() || !FieldFactory.validPercentage(percentageField)) {
             JOptionPane.showMessageDialog(this, "Fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

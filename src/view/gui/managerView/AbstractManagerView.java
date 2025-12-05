@@ -13,16 +13,13 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame {
-    private final AbstractManager<T> manager;
-
-
     private JPanel panel;
     private JButton createItemButton;
     private JButton editItemButton;
     private JButton deleteItemButton;
-    private JPanel ButtonPane;
     private JButton saveButton;
     private ItemViewPanel<T> itemViewPanel;
+    private final AbstractManager<T> manager;
     private boolean unsavedChanges = false;
     private final String itemName;
 
@@ -42,6 +39,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
         setupListeners();
 
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -76,7 +74,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
                 JOptionPane.showMessageDialog(this, "Select a " + itemName.toLowerCase() + " to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            T updated = editItemPopIp(selected);
+            T updated = editItemPopUp(selected);
 
             if (updated == null) { return; }
             manager.update(updated);
@@ -109,5 +107,5 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
 
     protected abstract T newItemPopUp(int idCounter);
 
-    protected abstract T editItemPopIp(T originalItem);
+    protected abstract T editItemPopUp(T originalItem);
 }
