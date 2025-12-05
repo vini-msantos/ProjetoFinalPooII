@@ -2,12 +2,13 @@ package view.gui.itemDialog;
 
 import model.item.Product;
 import model.item.ProductWithQuantity;
-import org.jetbrains.annotations.Nullable;
 import view.gui.util.FieldFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 
 public class ProductDialog extends JDialog {
@@ -24,7 +25,7 @@ public class ProductDialog extends JDialog {
     private final boolean withQuantity;
     private final int idCounter;
 
-    public ProductDialog(Component parentComponent, int idCounter, @Nullable Product template, boolean withQuantity, Integer templateQuantity) {
+    public ProductDialog(Component parentComponent, int idCounter, Product template, boolean withQuantity, Integer templateQuantity) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonCreate);
@@ -82,9 +83,9 @@ public class ProductDialog extends JDialog {
     }
 
     private void setupListeners() {
-        buttonCreate.addActionListener(_ -> onCreate());
+        buttonCreate.addActionListener(e -> onCreate());
 
-        buttonCancel.addActionListener(_ -> onCancel());
+        buttonCancel.addActionListener(e -> onCancel());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -94,12 +95,12 @@ public class ProductDialog extends JDialog {
         });
 
         if (withQuantity) {
-            quantityField.addActionListener(_ -> onCreate());
+            quantityField.addActionListener(e -> onCreate());
         } else {
-            priceField.addActionListener(_ -> onCreate());
+            priceField.addActionListener(e -> onCreate());
         }
 
-        contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onCancel() {

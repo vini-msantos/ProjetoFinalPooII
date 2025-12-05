@@ -45,17 +45,17 @@ public class AddProductDialog extends JDialog {
     }
 
     private void setupListeners() {
-        createButton.addActionListener(_ -> onOK());
-        cancelButton.addActionListener(_ -> onCancel());
-        openSearchButton.addActionListener(_ -> openSearch());
+        createButton.addActionListener(e -> onOK());
+        cancelButton.addActionListener(e -> onCancel());
+        openSearchButton.addActionListener(e -> openSearch());
 
-        idField.addActionListener(_ -> {
+        idField.addActionListener(e -> {
             nameField.requestFocusInWindow();
             reload();
         });
-        nameField.addActionListener(_ -> priceField.requestFocusInWindow());
-        priceField.addActionListener(_ -> quantityField.requestFocusInWindow());
-        quantityField.addActionListener(_ -> onOK());
+        nameField.addActionListener(e -> priceField.requestFocusInWindow());
+        priceField.addActionListener(e -> quantityField.requestFocusInWindow());
+        quantityField.addActionListener(e -> onOK());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -63,7 +63,7 @@ public class AddProductDialog extends JDialog {
                 onCancel();
             }
         });
-        contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void reload() {

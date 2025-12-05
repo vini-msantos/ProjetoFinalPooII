@@ -1,6 +1,6 @@
 package model.sorting;
+
 import model.item.Fee;
-import model.item.Product;
 
 import java.util.Comparator;
 

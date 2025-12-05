@@ -3,7 +3,6 @@ package view.gui.managerView;
 import model.item.Product;
 import model.manager.ProductManager;
 import model.sorting.ProductSortBy;
-import org.jetbrains.annotations.NotNull;
 import view.gui.itemDialog.ProductDialog;
 
 public class ProductManagerView extends AbstractManagerView<Product> {
@@ -18,7 +17,7 @@ public class ProductManagerView extends AbstractManagerView<Product> {
     }
 
     @Override
-    protected Product editItemPopUp(@NotNull Product originalItem) {
+    protected Product editItemPopUp(Product originalItem) {
         ProductDialog dialog = new ProductDialog(this, originalItem.getId(), originalItem, false, null);
         return dialog.getProduct();
     }

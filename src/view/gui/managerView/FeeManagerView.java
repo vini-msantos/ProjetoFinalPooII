@@ -3,7 +3,6 @@ package view.gui.managerView;
 import model.item.Fee;
 import model.manager.FeeManager;
 import model.sorting.FeeSortBy;
-import org.jetbrains.annotations.NotNull;
 import view.gui.itemDialog.FeeDialog;
 
 public class FeeManagerView extends AbstractManagerView<Fee> {
@@ -18,7 +17,7 @@ public class FeeManagerView extends AbstractManagerView<Fee> {
     }
 
     @Override
-    protected Fee editItemPopUp(@NotNull Fee originalItem) {
+    protected Fee editItemPopUp(Fee originalItem) {
         FeeDialog dialog = new FeeDialog(this, originalItem.getId(), originalItem);
         return dialog.getFee();
     }

@@ -5,12 +5,10 @@ import model.item.Bill;
 import model.item.Fee;
 import model.item.ProductWithQuantity;
 import model.manager.BillManager;
-import model.manager.ClientManager;
 import model.sorting.FeeSortBy;
 import model.sorting.QuantifiableProductSortBy;
 import model.sorting.SortingConfig;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
 import view.gui.itemDialog.AddFeeDialog;
 import view.gui.itemDialog.AddProductDialog;
 import view.gui.itemDialog.FeeDialog;
@@ -24,7 +22,6 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class BillEditor extends JFrame {
     private JPanel mainPanel;
@@ -47,7 +44,7 @@ public class BillEditor extends JFrame {
     private final Bill bill;
     private boolean unsavedChanges = false;
 
-    public BillEditor(@NotNull Bill bill) {
+    public BillEditor(Bill bill) {
         this.bill = bill;
         setContentPane(mainPanel);
 
@@ -90,14 +87,14 @@ public class BillEditor extends JFrame {
                 bill::removeFee
         ));
 
-        addProductButton.addActionListener(_ -> {
+        addProductButton.addActionListener(e -> {
             ProductWithQuantity product = new AddProductDialog(this).getProduct();
             if (product == null) { return; }
             bill.addProduct(product);
             reload();
             unsavedChanges = true;
         });
-        addFeeButton.addActionListener(_ -> {
+        addFeeButton.addActionListener(e -> {
             Fee fee = new AddFeeDialog(this).getFee();
             if (fee == null) { return; }
             bill.addFee(fee);
@@ -118,7 +115,7 @@ public class BillEditor extends JFrame {
                 f -> new FeeDialog(this, f.getId(), f).getFee()
         ));
 
-        saveButton.addActionListener(_ -> {
+        saveButton.addActionListener(e -> {
             if (BillManager.getInstance().save() == Status.OK ) {
                 unsavedChanges = false;
                 JOptionPane.showMessageDialog(this, "Changes saved.", "Saving Successful", JOptionPane.INFORMATION_MESSAGE);
@@ -127,7 +124,7 @@ public class BillEditor extends JFrame {
             }
         });
 
-        billStateSelector.addActionListener(_ -> {
+        billStateSelector.addActionListener(e -> {
             String state = (String) billStateSelector.getSelectedItem();
             switch (state) {
                 case "Paid" -> bill.setAsPaid();
@@ -154,7 +151,7 @@ public class BillEditor extends JFrame {
     }
 
     private <T extends AbstractItem> ActionListener editButtonListener(String itemName, ItemViewPanel<T> itemView, Consumer<T> update, Function<T, T> dialog) {
-        return _ -> {
+        return e -> {
             T selected = itemView.getSelectedValue();
             if (selected == null) {
                 JOptionPane.showMessageDialog(this, "Select a " + itemName + " to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -170,7 +167,7 @@ public class BillEditor extends JFrame {
     }
 
     private <T extends AbstractItem> ActionListener removeButtonListener(String itemName, ItemViewPanel<T> itemView, Consumer<Integer> removeFunction) {
-        return _ -> {
+        return e -> {
             List<T> selected = itemView.getSelectedValuesList();
             if (selected == null || selected.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Select one or more " + itemName + "s to delete.", "Warning", JOptionPane.WARNING_MESSAGE);

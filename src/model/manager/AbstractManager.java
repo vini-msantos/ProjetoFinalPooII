@@ -4,8 +4,6 @@ import model.item.AbstractItem;
 import model.item.ItemCollection;
 import model.sorting.SortingOption;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,7 +18,7 @@ public abstract class AbstractManager<T extends AbstractItem> implements Seriali
         this.idCounter = 0;
     }
 
-    public Status add(@NotNull T item) {
+    public Status add(T item) {
         if (item.getId() != idCounter) { return Status.ERROR; }
         Status result = items.add(item);
         if (result == Status.OK) {
@@ -29,7 +27,7 @@ public abstract class AbstractManager<T extends AbstractItem> implements Seriali
         return result;
     }
 
-    public void update(@NotNull T item) {
+    public void update(T item) {
         items.update(item);
     }
 
@@ -48,8 +46,8 @@ public abstract class AbstractManager<T extends AbstractItem> implements Seriali
         return items.list(getSortingOption());
     }
 
-    public abstract List<T> searchName(@Nullable String prefix);
-    protected List<T> search(@NotNull Function<T, Object> getter, @NotNull String prefix) {
+    public abstract List<T> searchName(String prefix);
+    protected List<T> search(Function<T, Object> getter, String prefix) {
         return items.search(getSortingOption(), getter, prefix);
     }
 

@@ -3,7 +3,6 @@ package view.gui.managerView;
 import model.item.Client;
 import model.manager.ClientManager;
 import model.sorting.ClientSortBy;
-import org.jetbrains.annotations.NotNull;
 import view.gui.itemDialog.ClientDialog;
 
 public class ClientManagerView extends AbstractManagerView<Client> {
@@ -18,7 +17,7 @@ public class ClientManagerView extends AbstractManagerView<Client> {
     }
 
     @Override
-    protected Client editItemPopUp(@NotNull Client originalItem) {
+    protected Client editItemPopUp(Client originalItem) {
         ClientDialog dialog = new ClientDialog(this, originalItem.getId(), originalItem);
         return dialog.getClient();
     }

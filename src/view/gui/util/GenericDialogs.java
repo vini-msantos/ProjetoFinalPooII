@@ -1,19 +1,16 @@
 package view.gui.util;
 
-import model.item.Bill;
 import model.item.Client;
 import model.item.Fee;
 import model.item.Product;
-import model.manager.BillManager;
 import model.manager.ClientManager;
 import model.manager.FeeManager;
 import model.manager.ProductManager;
-import model.sorting.*;
-import view.console.BillView;
+import model.sorting.ClientSortBy;
+import model.sorting.FeeSortBy;
+import model.sorting.ProductSortBy;
+import model.sorting.SortingConfig;
 import view.gui.itemDialog.ItemSearchDialog;
-import view.gui.managerView.ClientManagerView;
-import view.gui.managerView.FeeManagerView;
-import view.gui.managerView.ProductManagerView;
 
 import javax.swing.*;
 import java.awt.*;

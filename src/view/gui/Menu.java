@@ -11,6 +11,8 @@ import view.gui.managerView.FeeManagerView;
 import view.gui.managerView.ProductManagerView;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Menu extends JFrame {
     private JButton productManagerButton;
@@ -33,17 +35,33 @@ public class Menu extends JFrame {
     }
 
     private void setupListeners() {
-        productManagerButton.addActionListener(_ -> new ProductManagerView());
-        feeManagerButton.addActionListener(_ -> new FeeManagerView());
-        clientManagerButton.addActionListener(_ -> new ClientManagerView());
-        billManagerButton.addActionListener(_ -> new BillManagerView());
-        saveButton.addActionListener(_ -> {
+        productManagerButton.addActionListener(e -> new ProductManagerView());
+        feeManagerButton.addActionListener(e -> new FeeManagerView());
+        clientManagerButton.addActionListener(e -> new ClientManagerView());
+        billManagerButton.addActionListener(e -> new BillManagerView());
+        saveButton.addActionListener(e -> {
             ClientManager.getInstance().save();
             FeeManager.getInstance().save();
             BillManager.getInstance().save();
             ProductManager.getInstance().save();
             SortingConfig.save();
             JOptionPane.showMessageDialog(this, "All changes saved.", "Saved.", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int response = JOptionPane.showConfirmDialog(
+                        contentPanel,
+                        "Closing this window will quit the program.\nIf you have unsaved changes, save before closing\n\nDo you really want to quit?",
+                        "Want to Quit?",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (response == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
         });
     }
 }

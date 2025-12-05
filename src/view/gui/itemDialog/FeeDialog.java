@@ -1,7 +1,6 @@
 package view.gui.itemDialog;
 
 import model.item.Fee;
-import org.jetbrains.annotations.Nullable;
 import view.gui.util.FieldFactory;
 
 import javax.swing.*;
@@ -21,7 +20,7 @@ public class FeeDialog extends JDialog {
     private Fee fee = null;
     private final int idCounter;
 
-    public FeeDialog(Component parentComponent, int idCounter, @Nullable Fee template) {
+    public FeeDialog(Component parentComponent, int idCounter, Fee template) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonCreate);
@@ -51,9 +50,9 @@ public class FeeDialog extends JDialog {
     }
 
     private void setupListeners() {
-        buttonCreate.addActionListener(_ -> onCreate());
-        percentageField.addActionListener(_ -> onCreate());
-        buttonCancel.addActionListener(_ -> onCancel());
+        buttonCreate.addActionListener(e -> onCreate());
+        percentageField.addActionListener(e -> onCreate());
+        buttonCancel.addActionListener(e -> onCancel());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -62,7 +61,7 @@ public class FeeDialog extends JDialog {
             }
         });
 
-        contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onCreate() {

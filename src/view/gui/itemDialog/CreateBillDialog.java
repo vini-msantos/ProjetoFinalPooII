@@ -9,7 +9,9 @@ import view.gui.util.GenericDialogs;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class CreateBillDialog extends JDialog {
     private JPanel contentPane;
@@ -39,11 +41,11 @@ public class CreateBillDialog extends JDialog {
 
     private void setupListeners() {
 
-        createButton.addActionListener(_ -> onOK());
-        cancelButton.addActionListener(_ -> onCancel());
-        openSearchButton.addActionListener(_ -> openSearch());
+        createButton.addActionListener(e -> onOK());
+        cancelButton.addActionListener(e -> onCancel());
+        openSearchButton.addActionListener(e -> openSearch());
 
-        clientIdField.addActionListener(_ -> onOK());
+        clientIdField.addActionListener(e -> onOK());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -51,7 +53,7 @@ public class CreateBillDialog extends JDialog {
                 onCancel();
             }
         });
-        contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void openSearch() {

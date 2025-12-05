@@ -1,14 +1,13 @@
 package model.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
 
 public abstract class Serializer {
+    private final static String directoryPath = "data";
     public static <T> T load(String path) {
         T obj = null;
         try (
-                FileInputStream fileIn = new FileInputStream(path);
+                FileInputStream fileIn = new FileInputStream(directoryPath + "/" + path);
                 ObjectInputStream objectIn = new ObjectInputStream(fileIn)
         ) {
             obj = (T) objectIn.readObject();
@@ -19,9 +18,14 @@ public abstract class Serializer {
         }
     }
 
-    public static <T> Status save(@NotNull T object, String path) {
+    public static <T> Status save(T object, String path) {
+        File directory = new File("data");
+        if (!directory.exists() || !directory.isDirectory()) {
+            directory.mkdir();
+        }
+
         try (
-                FileOutputStream fileOut = new FileOutputStream(path);
+                FileOutputStream fileOut = new FileOutputStream(directoryPath + "/" + path);
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)
         ) {
             objectOut.writeObject(object);

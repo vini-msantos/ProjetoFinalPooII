@@ -1,18 +1,16 @@
 package model.item;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Objects;
 
 public class Client extends AbstractItem {
     private String name;
     private String phoneNumber;
 
-    public Client(int id, @NotNull String name) {
+    public Client(int id, String name) {
         this(id, name, null);
     }
 
-    public Client(int id, @NotNull String name, String phoneNumber) {
+    public Client(int id, String name, String phoneNumber) {
         super(id);
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -22,7 +20,7 @@ public class Client extends AbstractItem {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(@NotNull String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         if (phoneNumber.isBlank()) { return; }
         this.phoneNumber = phoneNumber;
     }
@@ -31,7 +29,7 @@ public class Client extends AbstractItem {
         return name;
     }
 
-    public void setName(@NotNull String name) {
+    public void setName(String name) {
         if (name.isBlank()) { return; }
         this.name = name;
     }

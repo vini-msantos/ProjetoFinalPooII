@@ -1,7 +1,5 @@
 package model.item;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.math.BigDecimal;
 
 public class Fee extends AbstractItem {

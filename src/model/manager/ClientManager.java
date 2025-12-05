@@ -5,14 +5,12 @@ import model.sorting.SortingConfig;
 import model.sorting.SortingOption;
 import model.util.Serializer;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
 public class ClientManager extends AbstractManager<Client> {
-    private static final String filePath = "data/clientManager.ser";
+    private static final String filePath = "clientManager.ser";
     private static ClientManager instance;
 
     protected ClientManager() {
@@ -36,7 +34,7 @@ public class ClientManager extends AbstractManager<Client> {
         return manager;
     }
 
-    public Status createClient(@NotNull String name, String phoneNumber) {
+    public Status createClient(String name, String phoneNumber) {
         Client client = new Client(getIdCounter(), name, phoneNumber);
         return add(client);
     }
@@ -57,7 +55,7 @@ public class ClientManager extends AbstractManager<Client> {
     }
 
     @Override
-    public List<Client> searchName(@Nullable String prefix) {
+    public List<Client> searchName(String prefix) {
         return search(Client::getName, Objects.requireNonNullElse(prefix, ""));
     }
 }

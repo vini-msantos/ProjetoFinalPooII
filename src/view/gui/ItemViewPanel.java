@@ -1,7 +1,6 @@
 package view.gui;
 
 import model.item.AbstractItem;
-import model.manager.AbstractManager;
 import model.sorting.Sorter;
 import model.sorting.SortingConfig;
 import model.sorting.SortingOption;
@@ -51,7 +50,7 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
     }
 
     private void setupListeners(Consumer<SortingOption<T>> setSort) {
-        ActionListener changeSortOptionListener = _ -> {
+        ActionListener changeSortOptionListener = e -> {
             Sorter<T> sortOption = (Sorter<T>) sortOptionBox.getSelectedItem();
             boolean reversed = reversedCheckBox.isSelected();
             if (sortOption == null) { return; }
@@ -64,8 +63,8 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         sortOptionBox.addActionListener(changeSortOptionListener);
         reversedCheckBox.addActionListener(changeSortOptionListener);
 
-        searchButton.addActionListener(_ -> reloadList());
-        searchField.addActionListener(_ -> reloadList());
+        searchButton.addActionListener(e -> reloadList());
+        searchField.addActionListener(e -> reloadList());
     }
 
     public List<T> getSelectedValuesList() {

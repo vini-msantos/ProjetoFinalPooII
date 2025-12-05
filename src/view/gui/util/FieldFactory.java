@@ -1,26 +1,24 @@
 package view.gui.util;
 
-import org.jetbrains.annotations.Nullable;
-
 import javax.swing.*;
 import java.util.regex.Pattern;
 
 public class FieldFactory {
-    public static void editNameField(JTextField field, @Nullable String initialValue) {
+    public static void editNameField(JTextField field, String initialValue) {
         field.setHorizontalAlignment(SwingConstants.LEFT);
         if (initialValue != null) { field.setText(initialValue); }
     }
-    public static void editPriceField(JFormattedTextField field, @Nullable Double initialValue) {
+    public static void editPriceField(JFormattedTextField field, Double initialValue) {
         field.setHorizontalAlignment(SwingConstants.RIGHT);
         if (initialValue != null) { field.setValue(initialValue); }
     }
 
-    public static void editQuantityField(JFormattedTextField field, @Nullable Integer initialValue) {
+    public static void editQuantityField(JFormattedTextField field, Integer initialValue) {
         field.setHorizontalAlignment(SwingConstants.RIGHT);
         if (initialValue != null) { field.setValue(initialValue); }
     }
 
-    public static void editPercentageField(JFormattedTextField field, @Nullable Double initialValue) {
+    public static void editPercentageField(JFormattedTextField field, Double initialValue) {
         field.setHorizontalAlignment(SwingConstants.RIGHT);
         if (initialValue != null) { field.setValue(initialValue * 100); }
     }

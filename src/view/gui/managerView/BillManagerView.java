@@ -3,7 +3,6 @@ package view.gui.managerView;
 import model.item.Bill;
 import model.manager.BillManager;
 import model.sorting.BillSortBy;
-import org.jetbrains.annotations.NotNull;
 import view.gui.BillEditor;
 import view.gui.itemDialog.CreateBillDialog;
 
@@ -19,7 +18,7 @@ public class BillManagerView extends AbstractManagerView<Bill> {
     }
 
     @Override
-    protected Bill editItemPopUp(@NotNull Bill originalItem) {
+    protected Bill editItemPopUp(Bill originalItem) {
         new BillEditor(originalItem);
         return originalItem;
     }

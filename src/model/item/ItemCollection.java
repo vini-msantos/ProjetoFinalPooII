@@ -2,10 +2,8 @@ package model.item;
 
 import model.sorting.SortingOption;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,19 +17,19 @@ public class ItemCollection<T extends AbstractItem> implements Serializable {
         this.items = new HashMap<>();
     }
 
-    public List<T> list(@NotNull SortingOption<T> sortingOption) {
+    public List<T> list(SortingOption<T> sortingOption) {
         return items.values().stream()
                 .sorted(sortingOption.getComparator())
                 .toList();
     }
 
-    public List<T> search(@NotNull SortingOption<T> sortingOption, @NotNull Function<T, Object> getter, @NotNull String prefix) {
+    public List<T> search(SortingOption<T> sortingOption, Function<T, Object> getter, String prefix) {
         return list(sortingOption).stream()
                 .filter(item -> getter.apply(item).toString().toLowerCase().startsWith(prefix.toLowerCase()))
                 .toList();
     }
 
-    public Status add(@NotNull T item) {
+    public Status add(T item) {
         if (items.putIfAbsent(item.getId(), item) != null) { return Status.ERROR; }
         return Status.OK;
     }

@@ -2,18 +2,16 @@ package model.manager;
 
 import model.item.Product;
 import model.sorting.SortingConfig;
-import model.util.Serializer;
 import model.sorting.SortingOption;
+import model.util.Serializer;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
 public class ProductManager extends AbstractManager<Product> {
-    private static final String filePath = "data/productManager.ser";
+    private static final String filePath = "productManager.ser";
     private static ProductManager instance;
 
     protected ProductManager() {
@@ -37,7 +35,7 @@ public class ProductManager extends AbstractManager<Product> {
         return manager;
     }
 
-    public Status createProduct(@NotNull String name, @NotNull BigDecimal price) {
+    public Status createProduct(String name, BigDecimal price) {
         Product product = new Product(getIdCounter(), name, price);
         return add(product);
     }
@@ -58,7 +56,7 @@ public class ProductManager extends AbstractManager<Product> {
     }
 
     @Override
-    public List<Product> searchName(@Nullable String prefix) {
+    public List<Product> searchName(String prefix) {
         return search(Product::getName, Objects.requireNonNullElse(prefix, ""));
     }
 }

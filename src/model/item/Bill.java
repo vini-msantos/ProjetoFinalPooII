@@ -4,8 +4,6 @@ import model.manager.FeeManager;
 import model.manager.ProductManager;
 import model.sorting.SortingConfig;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,7 +32,7 @@ public class Bill extends AbstractItem {
     private BillState state;
     private Client client;
 
-    public Bill(int id, @NotNull Client client) {
+    public Bill(int id, Client client) {
         super(id);
         this.products = new ItemCollection<>();
         this.fees = new ItemCollection<>();
@@ -44,7 +42,7 @@ public class Bill extends AbstractItem {
         this.client = client;
     }
 
-    public Status addProduct(int id, @Nullable BigDecimal price, @Nullable Integer quantity) {
+    public Status addProduct(int id, BigDecimal price, Integer quantity) {
         Product fromCatalog = ProductManager.getInstance().get(id);
         if (fromCatalog == null) { return Status.ERROR; }
 
@@ -65,7 +63,7 @@ public class Bill extends AbstractItem {
         return Status.OK;
     }
 
-    public Status addFee(int id, @Nullable BigDecimal percentage) {
+    public Status addFee(int id, BigDecimal percentage) {
         Fee fromCatalog = FeeManager.getInstance().get(id);
         if (fromCatalog == null) { return Status.ERROR; }
 
@@ -136,7 +134,7 @@ public class Bill extends AbstractItem {
         return client;
     }
 
-    public void setClient(@NotNull Client client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 

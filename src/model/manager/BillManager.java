@@ -2,21 +2,16 @@ package model.manager;
 
 import model.item.Bill;
 import model.item.Client;
-import model.item.Fee;
-import model.sorting.BillSortBy;
 import model.sorting.SortingConfig;
 import model.sorting.SortingOption;
 import model.util.Serializer;
 import model.util.Status;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 public class BillManager extends AbstractManager<Bill> {
-    private static final String filePath = "data/billManager.ser";
+    private static final String filePath = "billManager.ser";
     private static BillManager instance;
 
     protected BillManager() {
@@ -40,7 +35,7 @@ public class BillManager extends AbstractManager<Bill> {
         return manager;
     }
 
-    public Status createBill(@NotNull Client client) {
+    public Status createBill(Client client) {
         Bill Bill = new Bill(getIdCounter(), client);
         return add(Bill);
     }
@@ -61,7 +56,7 @@ public class BillManager extends AbstractManager<Bill> {
     }
 
     @Override
-    public List<Bill> searchName(@Nullable String prefix) {
+    public List<Bill> searchName(String prefix) {
         return search(Bill::getClientName, Objects.requireNonNullElse(prefix, ""));
     }
 }

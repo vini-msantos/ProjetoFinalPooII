@@ -4,8 +4,8 @@ import model.item.AbstractItem;
 import model.manager.AbstractManager;
 import model.sorting.Sorter;
 import model.util.Status;
-import view.gui.util.GenericDialogs;
 import view.gui.ItemViewPanel;
+import view.gui.util.GenericDialogs;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -45,7 +45,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
 
     private void setupListeners() {
 
-        deleteItemButton.addActionListener(_ -> {
+        deleteItemButton.addActionListener(e -> {
             List<T> selected = itemViewPanel.getSelectedValuesList();
             if (selected == null || selected.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Select one or more " + itemName.toLowerCase() + "s to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -60,7 +60,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
             }
         });
 
-        createItemButton.addActionListener(_ -> {
+        createItemButton.addActionListener(e -> {
             T newItem = newItemPopUp(manager.getIdCounter());
             if (newItem == null) { return; }
             manager.add(newItem);
@@ -68,7 +68,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
             itemViewPanel.reloadList();
         });
 
-        editItemButton.addActionListener(_ -> {
+        editItemButton.addActionListener(e -> {
             T selected = itemViewPanel.getSelectedValue();
             if (selected == null) {
                 JOptionPane.showMessageDialog(this, "Select a " + itemName.toLowerCase() + " to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -82,7 +82,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
             itemViewPanel.reloadList();
         });
 
-        saveButton.addActionListener(_ -> {
+        saveButton.addActionListener(e -> {
             if (manager.save() == Status.OK ) {
                 unsavedChanges = false;
                 JOptionPane.showMessageDialog(this, "Changes saved.", "Saving Successful", JOptionPane.INFORMATION_MESSAGE);

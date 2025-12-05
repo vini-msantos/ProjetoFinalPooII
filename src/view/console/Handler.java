@@ -3,7 +3,6 @@ package view.console;
 import model.item.*;
 import model.manager.*;
 import model.sorting.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -541,7 +540,7 @@ public class Handler {
         return this;
     }
 
-    public Handler handleGetString(@NotNull StringBuilder prefix) {
+    public Handler handleGetString(StringBuilder prefix) {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("\"(?<value>(?:\\w| )*)\"", command);
         if (groups != null) {

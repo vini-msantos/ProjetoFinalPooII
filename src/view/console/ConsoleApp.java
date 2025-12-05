@@ -3,7 +3,6 @@ package view.console;
 import model.item.AbstractItem;
 import model.manager.*;
 import model.sorting.SortingConfig;
-import org.jetbrains.annotations.Nullable;
 import view.App;
 
 import java.util.List;
@@ -95,7 +94,7 @@ public class ConsoleApp implements App {
 
     public static <T extends AbstractItem> Integer getSearchResponse(
             AbstractManager<T> manager,
-            @Nullable String prefix
+            String prefix
     ) {
         StringBuilder query = new StringBuilder(Objects.requireNonNullElse(prefix, ""));
         List<T> list = manager.searchName(query.toString());

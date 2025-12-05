@@ -1,14 +1,13 @@
 package model.sorting;
 
 import model.item.*;
-import model.manager.FeeManager;
 import model.util.Serializer;
 import model.util.Status;
 
 import java.io.Serializable;
 
 public class SortingConfig implements Serializable {
-    private static final String filePath = "data/sortingConfig.ser";
+    private static final String filePath = "sortingConfig.ser";
     private static SortingConfig instance;
     private SortingOption<Product> productSortingOption;
     private SortingOption<ProductWithQuantity> quantifiableProductSortingOption;

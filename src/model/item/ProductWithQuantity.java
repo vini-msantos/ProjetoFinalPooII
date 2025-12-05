@@ -1,13 +1,11 @@
 package model.item;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.math.BigDecimal;
 
 public class ProductWithQuantity extends Product {
     private int quantity;
 
-    public ProductWithQuantity(int id, @NotNull String name, @NotNull BigDecimal price, int quantity) {
+    public ProductWithQuantity(int id, String name, BigDecimal price, int quantity) {
         super(id, name, price);
         if (quantity <= 0) {
             this.quantity = 1;

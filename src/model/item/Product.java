@@ -1,14 +1,12 @@
 package model.item;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.math.BigDecimal;
 
 public class Product extends AbstractItem {
     private String name;
     private BigDecimal price;
 
-    public Product(int id, @NotNull String name, @NotNull BigDecimal price) {
+    public Product(int id, String name, BigDecimal price) {
         super(id);
         if (name.isBlank()) {
             this.name = "Product with no name";
@@ -26,7 +24,7 @@ public class Product extends AbstractItem {
         return name;
     }
 
-    public void setName(@NotNull String name) {
+    public void setName(String name) {
         if (name.isBlank()) { return; }
         this.name = name;
     }
@@ -35,7 +33,7 @@ public class Product extends AbstractItem {
         return price;
     }
 
-    public void setPrice(@NotNull BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         if (price.doubleValue() <= 0) { return; }
         this.price = price;
     }

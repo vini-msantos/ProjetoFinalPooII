@@ -1,14 +1,14 @@
 package view.gui.itemDialog;
 
 import model.item.AbstractItem;
-import model.manager.AbstractManager;
 import model.sorting.Sorter;
 import model.sorting.SortingOption;
 import view.gui.ItemViewPanel;
-import view.gui.managerView.AbstractManagerView;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -40,8 +40,8 @@ public class ItemSearchDialog<T extends AbstractItem> extends JDialog {
     }
 
     private void setupListeners() {
-        buttonOK.addActionListener(_ -> onSelect());
-        buttonCancel.addActionListener(_ -> onCancel());
+        buttonOK.addActionListener(e -> onSelect());
+        buttonCancel.addActionListener(e -> onCancel());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -49,7 +49,7 @@ public class ItemSearchDialog<T extends AbstractItem> extends JDialog {
                 onCancel();
             }
         });
-        contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onSelect() {

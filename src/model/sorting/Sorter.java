@@ -1,7 +1,5 @@
 package model.sorting;
 
-import model.item.Product;
-
 import java.util.Comparator;
 
 public interface Sorter<T> {

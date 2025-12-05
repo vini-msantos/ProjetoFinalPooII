@@ -3,14 +3,14 @@ import view.AppFactory;
 import view.console.ConsoleAppFactory;
 import view.gui.GuiAppFactory;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
-        for (String arg: args) {
-            if (arg.equals("--gui")) {
-                AppFactory.setConcreteFactory(new ConsoleAppFactory());
-            } else if (arg.equals("--terminal")) {
-                AppFactory.setConcreteFactory(new GuiAppFactory());
-            }
+        if (Arrays.asList(args).contains("--terminal")) {
+            AppFactory.setConcreteFactory(new ConsoleAppFactory());
+        } else {
+            AppFactory.setConcreteFactory(new GuiAppFactory());
         }
 
 
