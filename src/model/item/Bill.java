@@ -54,6 +54,17 @@ public class Bill extends AbstractItem {
         return products.add(copy.withQuantity(Objects.requireNonNullElse(quantity, 1)));
     }
 
+    public Status addProduct(ProductWithQuantity product) {
+        recentChanges = true;
+        products.add(product);
+        return Status.OK;
+    }
+    public Status addFee(Fee fee) {
+        recentChanges = true;
+        fees.add(fee);
+        return Status.OK;
+    }
+
     public Status addFee(int id, @Nullable BigDecimal percentage) {
         Fee fromCatalog = FeeManager.getInstance().get(id);
         if (fromCatalog == null) { return Status.ERROR; }

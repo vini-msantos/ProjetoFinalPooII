@@ -47,7 +47,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
 
         deleteItemButton.addActionListener(_ -> {
             List<T> selected = itemViewPanel.getSelectedValuesList();
-            if (selected == null) {
+            if (selected == null || selected.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Select one or more " + itemName.toLowerCase() + "s to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
                 return;
             }
