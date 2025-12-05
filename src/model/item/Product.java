@@ -55,6 +55,6 @@ public class Product extends AbstractItem {
 
     @Override
     public String toString() {
-        return "(" + getId() + ")   " + getName() + "   $" + getPrice();
+        return "(" + getId() + ")   " + getName() + "   $" + String.format("%.2f", getPrice());
     }
 }

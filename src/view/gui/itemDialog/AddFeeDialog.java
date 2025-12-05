@@ -1,8 +1,7 @@
 package view.gui.itemDialog;
 
-import model.item.Product;
-import model.item.ProductWithQuantity;
-import model.manager.ProductManager;
+import model.item.Fee;
+import model.manager.FeeManager;
 import view.gui.util.FieldFactory;
 import view.gui.util.GenericDialogs;
 
@@ -13,30 +12,29 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 
-public class AddProductDialog extends JDialog {
+public class AddFeeDialog extends JDialog {
     private JPanel contentPane;
     private JButton createButton;
     private JButton cancelButton;
     private JFormattedTextField idField;
     private JButton openSearchButton;
     private JPanel mainPanel;
-    private JFormattedTextField priceField;
-    private JFormattedTextField quantityField;
+    private JFormattedTextField percentageField;
     private JTextField nameField;
-    private ProductWithQuantity productWithQuantity = null;
+    private JFormattedTextField quantityField;
+    private Fee fee = null;
 
-    public AddProductDialog(Component parent) {
+    public AddFeeDialog(Component parent) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(createButton);
         setLocationRelativeTo(parent);
 
-        setTitle("Adding Product");
+        setTitle("Adding Fee");
 
         FieldFactory.editIdField(idField);
         FieldFactory.editNameField(nameField, null);
-        FieldFactory.editPriceField(priceField, null);
-        FieldFactory.editQuantityField(quantityField, null);
+        FieldFactory.editPercentageField(percentageField, null);
 
         setupListeners();
 
@@ -45,6 +43,7 @@ public class AddProductDialog extends JDialog {
     }
 
     private void setupListeners() {
+
         createButton.addActionListener(_ -> onOK());
         cancelButton.addActionListener(_ -> onCancel());
         openSearchButton.addActionListener(_ -> openSearch());
@@ -53,9 +52,9 @@ public class AddProductDialog extends JDialog {
             nameField.requestFocusInWindow();
             reload();
         });
-        nameField.addActionListener(_ -> priceField.requestFocusInWindow());
-        priceField.addActionListener(_ -> quantityField.requestFocusInWindow());
-        quantityField.addActionListener(_ -> onOK());
+
+        nameField.addActionListener(_ -> percentageField.requestFocusInWindow());
+        percentageField.addActionListener(_ -> onOK());
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -73,55 +72,54 @@ public class AddProductDialog extends JDialog {
         }
 
         int id = Integer.parseInt(idField.getText().trim());
-        ProductManager pm = ProductManager.getInstance();
-        Product product = pm.get(id);
-        if (product == null) {
-            JOptionPane.showMessageDialog(this, "Given ID does not correspond to valid product.", "No Such ID Error", JOptionPane.ERROR_MESSAGE);
+        FeeManager pm = FeeManager.getInstance();
+        Fee fee = pm.get(id);
+        if (fee == null) {
+            JOptionPane.showMessageDialog(this, "Given ID does not correspond to valid fee.", "No Such ID Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        nameField.setText(product.getName());
-        priceField.setText(product.getPrice().toString());
+        nameField.setText(fee.getName());
+        percentageField.setText(fee.getPercentage().multiply(BigDecimal.valueOf(100)).intValue() + "");
     }
 
 
     private void openSearch() {
-        Product product = GenericDialogs.searchProduct(this);
-        if (product == null) { return; }
-        idField.setText(product.getId() + "");
+        Fee fee = GenericDialogs.searchFee(this);
+        if (fee == null) { return; }
+        idField.setText(fee.getId() + "");
         reload();
 
-        priceField.requestFocusInWindow();
+        percentageField.requestFocusInWindow();
     }
 
     private void onOK() {
-        if (!FieldFactory.validId(idField) || nameField.getText().isBlank() || !FieldFactory.validPrice(priceField) || !FieldFactory.validQuantity(quantityField)) {
+        if (nameField.getText().isBlank() || !FieldFactory.validId(idField) || !FieldFactory.validPercentage(percentageField)) {
             JOptionPane.showMessageDialog(this, "Please fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         int id = Integer.parseInt(idField.getText().trim());
-        ProductManager pm = ProductManager.getInstance();
-        Product product = pm.get(id);
-        if (product == null) {
-            JOptionPane.showMessageDialog(this, "Given ID does not correspond to valid product.", "No Such ID Error", JOptionPane.ERROR_MESSAGE);
+        FeeManager fm = FeeManager.getInstance();
+        Fee idFee = fm.get(id);
+        if (idFee == null) {
+            JOptionPane.showMessageDialog(this, "Given ID does not correspond to valid fee.", "No Such ID Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        int quantity = Integer.parseInt(quantityField.getText().trim());
-        BigDecimal price = BigDecimal.valueOf(Double.parseDouble(priceField.getText().trim()));
         String name = nameField.getText().trim();
+        BigDecimal percentage = BigDecimal.valueOf(Double.parseDouble(percentageField.getText().trim()) / 100);
 
-        productWithQuantity = new ProductWithQuantity(id, name, price, quantity);
+        fee = new Fee(id, name, percentage);
         dispose();
     }
 
     private void onCancel() {
-        productWithQuantity = null;
+        fee = null;
         dispose();
     }
 
-    public ProductWithQuantity getProduct() {
-        return productWithQuantity;
+    public Fee getFee() {
+        return fee;
     }
 }

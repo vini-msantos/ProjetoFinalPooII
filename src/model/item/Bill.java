@@ -146,7 +146,17 @@ public class Bill extends AbstractItem {
 
     @Override
     public String toString() {
-        return "(" + getId() + ")   " + getClientName() + "   $" + getTotal() + "   " + getState();
+        return "(" + getId() + ")   " + getClientName() + "   $" + String.format("%.2f", getTotal()) + "   " + getState();
+    }
+
+    public void editFee(Fee fee) {
+        fees.update(fee);
+        recentChanges = true;
+    }
+
+    public void editProduct(ProductWithQuantity product) {
+        products.update(product);
+        recentChanges = true;
     }
 
     public void setAsPaid() { state = BillState.PAID; }

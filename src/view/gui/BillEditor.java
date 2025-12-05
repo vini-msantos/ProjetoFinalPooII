@@ -11,7 +11,10 @@ import model.sorting.QuantifiableProductSortBy;
 import model.sorting.SortingConfig;
 import model.util.Status;
 import org.jetbrains.annotations.NotNull;
+import view.gui.itemDialog.AddFeeDialog;
 import view.gui.itemDialog.AddProductDialog;
+import view.gui.itemDialog.FeeDialog;
+import view.gui.itemDialog.ProductDialog;
 import view.gui.util.GenericDialogs;
 
 import javax.swing.*;
@@ -20,6 +23,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BillEditor extends JFrame {
     private JPanel mainPanel;
@@ -84,14 +89,34 @@ public class BillEditor extends JFrame {
                 feesView,
                 bill::removeFee
         ));
+
         addProductButton.addActionListener(_ -> {
             ProductWithQuantity product = new AddProductDialog(this).getProduct();
             if (product == null) { return; }
             bill.addProduct(product);
+            reload();
+            unsavedChanges = true;
+        });
+        addFeeButton.addActionListener(_ -> {
+            Fee fee = new AddFeeDialog(this).getFee();
+            if (fee == null) { return; }
+            bill.addFee(fee);
+            reload();
             unsavedChanges = true;
         });
 
-
+        editProductButton.addActionListener(editButtonListener(
+                "product",
+                productsView,
+                bill::editProduct,
+                p -> new ProductDialog(this, p.getId(), p, true, p.getQuantity()).getProductWithQuantity()
+        ));
+        editFeeButton.addActionListener(editButtonListener(
+                "fee",
+                feesView,
+                bill::editFee,
+                f -> new FeeDialog(this, f.getId(), f).getFee()
+        ));
 
         saveButton.addActionListener(_ -> {
             if (BillManager.getInstance().save() == Status.OK ) {
@@ -99,6 +124,16 @@ public class BillEditor extends JFrame {
                 JOptionPane.showMessageDialog(this, "Changes saved.", "Saving Successful", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Saving was unsuccessful.", "Saving Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        billStateSelector.addActionListener(_ -> {
+            String state = (String) billStateSelector.getSelectedItem();
+            switch (state) {
+                case "Paid" -> bill.setAsPaid();
+                case "Unpaid" -> bill.setAsUnpaid();
+                case "Cancelled" -> bill.setAsCancelled();
+                case null, default -> {}
             }
         });
 
@@ -115,8 +150,23 @@ public class BillEditor extends JFrame {
     private void reload() {
         productsView.reloadList();
         feesView.reloadList();
+        totalLabel.setText(String.format("$%.2f",bill.getTotal().doubleValue()));
+    }
 
-        totalLabel.setText("$" + bill.getTotal());
+    private <T extends AbstractItem> ActionListener editButtonListener(String itemName, ItemViewPanel<T> itemView, Consumer<T> update, Function<T, T> dialog) {
+        return _ -> {
+            T selected = itemView.getSelectedValue();
+            if (selected == null) {
+                JOptionPane.showMessageDialog(this, "Select a " + itemName + " to edit.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            T updated = dialog.apply(selected);
+
+            if (updated == null) { return; }
+            update.accept(updated);
+            unsavedChanges = true;
+            reload();
+        };
     }
 
     private <T extends AbstractItem> ActionListener removeButtonListener(String itemName, ItemViewPanel<T> itemView, Consumer<Integer> removeFunction) {

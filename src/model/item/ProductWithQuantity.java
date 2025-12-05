@@ -31,6 +31,6 @@ public class ProductWithQuantity extends Product {
 
     @Override
     public String toString() {
-    return getQuantity() + "x   (" + getId() + ")   " + getName() + "   $" + getPrice() + "  ----  $" + getTotal();
+    return getQuantity() + "x   (" + getId() + ")   " + getName() + "   $" + String.format("%.2f", getPrice()) + "  ----  $" + String.format("%.2f", getTotal());
     }
 }
