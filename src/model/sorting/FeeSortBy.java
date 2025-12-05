@@ -10,7 +10,7 @@ public enum FeeSortBy implements Sorter<Fee> {
     PERCENTAGE;
 
     @Override
-    public Comparator<? super Fee> sortAscending() {
+    public Comparator<Fee> sortAscending() {
         return switch (this) {
             case ID -> Comparator.comparingInt(Fee::getId);
             case NAME -> Comparator.comparing(Fee::getName);

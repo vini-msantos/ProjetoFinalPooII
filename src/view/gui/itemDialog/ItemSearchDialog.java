@@ -3,11 +3,15 @@ package view.gui.itemDialog;
 import model.item.AbstractItem;
 import model.manager.AbstractManager;
 import model.sorting.Sorter;
+import model.sorting.SortingOption;
 import view.gui.ItemViewPanel;
 import view.gui.managerView.AbstractManagerView;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ItemSearchDialog<T extends AbstractItem> extends JDialog {
@@ -17,13 +21,18 @@ public class ItemSearchDialog<T extends AbstractItem> extends JDialog {
     private ItemViewPanel<T> itemView;
     private T selected;
 
-    public ItemSearchDialog(AbstractManager<T> manager, Sorter<T>[] sorters) {
+    public ItemSearchDialog(
+            Function<String, List<T>> searcher,
+            Supplier<SortingOption<T>> getSort,
+            Consumer<SortingOption<T>> setSort,
+            Sorter<T>[] sorters
+    ) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
         setupListeners();
-        itemView.setupItemView(manager::searchName, manager, sorters);
+        itemView.setupItemView(searcher, getSort, setSort, sorters);
 
         pack();
         setLocationRelativeTo(null);

@@ -1,9 +1,8 @@
 package model.manager;
 
-import model.item.Client;
 import model.item.Product;
+import model.sorting.SortingConfig;
 import model.util.Serializer;
-import model.sorting.ProductSortBy;
 import model.sorting.SortingOption;
 import model.util.Status;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +17,7 @@ public class ProductManager extends AbstractManager<Product> {
     private static ProductManager instance;
 
     protected ProductManager() {
-        super(new SortingOption<>(ProductSortBy.NAME, false));
+        super();
     }
 
     public static ProductManager getInstance() {
@@ -41,6 +40,16 @@ public class ProductManager extends AbstractManager<Product> {
     public Status createProduct(@NotNull String name, @NotNull BigDecimal price) {
         Product product = new Product(getIdCounter(), name, price);
         return add(product);
+    }
+
+    @Override
+    public SortingOption<Product> getSortingOption() {
+        return SortingConfig.getProductSortingOption();
+    }
+
+    @Override
+    public void setSortingOption(SortingOption<Product> sortingOption) {
+        SortingConfig.setProductSortingOption(sortingOption);
     }
 
     @Override

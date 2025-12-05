@@ -1,9 +1,8 @@
 package model.manager;
 
-import model.item.Client;
 import model.item.Fee;
+import model.sorting.SortingConfig;
 import model.util.Serializer;
-import model.sorting.FeeSortBy;
 import model.sorting.SortingOption;
 import model.util.Status;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,17 @@ public class FeeManager extends AbstractManager<Fee> implements Serializable {
     private static FeeManager instance;
 
     private FeeManager() {
-        super(new SortingOption<>(FeeSortBy.NAME, false));
+        super();
+    }
+
+    @Override
+    public SortingOption<Fee> getSortingOption() {
+        return SortingConfig.getFeeSortingOption();
+    }
+
+    @Override
+    public void setSortingOption(SortingOption<Fee> sortingOption) {
+        SortingConfig.setFeeSortingOption(sortingOption);
     }
 
     public static FeeManager getInstance() {

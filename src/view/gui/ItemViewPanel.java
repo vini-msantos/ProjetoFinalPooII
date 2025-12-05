@@ -3,12 +3,15 @@ package view.gui;
 import model.item.AbstractItem;
 import model.manager.AbstractManager;
 import model.sorting.Sorter;
+import model.sorting.SortingConfig;
 import model.sorting.SortingOption;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ItemViewPanel<T extends AbstractItem> extends JPanel {
     private JList<T> itemList;
@@ -18,7 +21,6 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
     private JButton searchButton;
     private JPanel mainPanel;
     private Function<String, List<T>> searcher;
-    private AbstractManager<T> manager;
     private final DefaultListModel<T> listModel;
 
     public ItemViewPanel() {
@@ -26,15 +28,20 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         itemList.setModel(listModel);
     }
 
-    public void setupItemView(Function<String, List<T>> searcher, AbstractManager<T> manager, Sorter<T>[] sortingOptions) {
+    public void setupItemView(
+            Function<String, List<T>> searcher,
+            Supplier<SortingOption<T>> getSort,
+            Consumer<SortingOption<T>> setSort,
+            Sorter<T>[] sortingOptions
+    ) {
         sortOptionBox.setModel(new DefaultComboBoxModel<>(sortingOptions));
-        sortOptionBox.setSelectedItem(manager.getSortingOption().getSorter());
+        sortOptionBox.setSelectedItem(getSort.get().getSorter());
+        reversedCheckBox.setSelected(getSort.get().isReversed());
 
-        this.manager = manager;
         this.searcher = searcher;
 
         reloadList();
-        setupListeners();
+        setupListeners(setSort);
     }
 
     public void reloadList() {
@@ -43,14 +50,15 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         listModel.addAll(newList);
     }
 
-    private void setupListeners() {
+    private void setupListeners(Consumer<SortingOption<T>> setSort) {
         ActionListener changeSortOptionListener = _ -> {
             Sorter<T> sortOption = (Sorter<T>) sortOptionBox.getSelectedItem();
             boolean reversed = reversedCheckBox.isSelected();
             if (sortOption == null) { return; }
 
-            manager.setSortingOption(new SortingOption<>(sortOption, reversed));
+            setSort.accept(new SortingOption<>(sortOption, reversed));
             reloadList();
+            SortingConfig.save();
         };
 
         sortOptionBox.addActionListener(changeSortOptionListener);

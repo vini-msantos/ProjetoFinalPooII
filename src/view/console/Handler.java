@@ -380,13 +380,12 @@ public class Handler {
         Map<String, String> groups = matchRegex("sort bill by (?<field>id|name|total)(?: (?<order>v))?$", command);
         if (groups == null) { return this; }
         done = true;
-        
-        BillManager bm = BillManager.getInstance();
+
         boolean reversed = groups.get("order") != null;
         switch (groups.get("field")) {
-            case "id" -> bm.setSortingOption(new SortingOption<>(BillSortBy.ID, reversed));
-            case "name" -> bm.setSortingOption(new SortingOption<>(BillSortBy.CLIENT_NAME, reversed));
-            case "total" -> bm.setSortingOption(new SortingOption<>(BillSortBy.TOTAL, reversed));
+            case "id" -> SortingConfig.setBillSortingOption(new SortingOption<>(BillSortBy.ID, reversed));
+            case "name" -> SortingConfig.setBillSortingOption(new SortingOption<>(BillSortBy.CLIENT_NAME, reversed));
+            case "total" -> SortingConfig.setBillSortingOption(new SortingOption<>(BillSortBy.TOTAL, reversed));
         }
         System.out.println("(i) Changed bill sorting option.");
         return this;
@@ -398,12 +397,20 @@ public class Handler {
         if (groups == null) { return this; }
         done = true;
 
-        ProductManager pm = ProductManager.getInstance();
         boolean reversed = groups.get("order") != null;
         switch (groups.get("field")) {
-            case "id" -> pm.setSortingOption(new SortingOption<>(ProductSortBy.ID, reversed));
-            case "name" -> pm.setSortingOption(new SortingOption<>(ProductSortBy.NAME, reversed));
-            case "price" -> pm.setSortingOption(new SortingOption<>(ProductSortBy.PRICE, reversed));
+            case "id" -> {
+                SortingConfig.setProductSortingOption(new SortingOption<>(ProductSortBy.ID, reversed));
+                SortingConfig.setQuantifiableProductSortingOption(new SortingOption<>(QuantifiableProductSortBy.ID, reversed));
+            }
+            case "name" -> {
+                SortingConfig.setProductSortingOption(new SortingOption<>(ProductSortBy.NAME, reversed));
+                SortingConfig.setQuantifiableProductSortingOption(new SortingOption<>(QuantifiableProductSortBy.NAME, reversed));
+            }
+            case "price" -> {
+                SortingConfig.setProductSortingOption(new SortingOption<>(ProductSortBy.PRICE, reversed));
+                SortingConfig.setQuantifiableProductSortingOption(new SortingOption<>(QuantifiableProductSortBy.PRICE, reversed));
+            }
         }
         System.out.println("(i) Changed product sorting option.");
         return this;
@@ -415,12 +422,11 @@ public class Handler {
         if (groups == null) { return this; }
         done = true;
 
-        FeeManager fm = FeeManager.getInstance();
         boolean reversed = groups.get("order") != null;
         switch (groups.get("field")) {
-            case "id" -> fm.setSortingOption(new SortingOption<>(FeeSortBy.ID, reversed));
-            case "name" -> fm.setSortingOption(new SortingOption<>(FeeSortBy.NAME, reversed));
-            case "percentage" -> fm.setSortingOption(new SortingOption<>(FeeSortBy.PERCENTAGE, reversed));
+            case "id" -> SortingConfig.setFeeSortingOption(new SortingOption<>(FeeSortBy.ID, reversed));
+            case "name" -> SortingConfig.setFeeSortingOption(new SortingOption<>(FeeSortBy.NAME, reversed));
+            case "percentage" -> SortingConfig.setFeeSortingOption(new SortingOption<>(FeeSortBy.PERCENTAGE, reversed));
         }
         System.out.println("(i) Changed fee sorting option.");
         return this;
@@ -432,11 +438,10 @@ public class Handler {
         if (groups == null) { return this; }
         done = true;
 
-        ClientManager cm = ClientManager.getInstance();
         boolean reversed = groups.get("order") != null;
         switch (groups.get("field")) {
-            case "id" -> cm.setSortingOption(new SortingOption<>(ClientSortBy.ID, reversed));
-            case "name" -> cm.setSortingOption(new SortingOption<>(ClientSortBy.NAME, reversed));
+            case "id" -> SortingConfig.setClientSortingOption(new SortingOption<>(ClientSortBy.ID, reversed));
+            case "name" -> SortingConfig.setClientSortingOption(new SortingOption<>(ClientSortBy.NAME, reversed));
         }
         System.out.println("(i) Changed client sorting option.");
         return this;

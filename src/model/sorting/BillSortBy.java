@@ -10,7 +10,7 @@ public enum BillSortBy implements Sorter<Bill> {
     TOTAL;
 
     @Override
-    public Comparator<? super Bill> sortAscending() {
+    public Comparator<Bill> sortAscending() {
         return switch (this) {
             case ID -> Comparator.comparingInt(Bill::getId);
             case CLIENT_NAME -> Comparator.comparing(Bill::getClientName);

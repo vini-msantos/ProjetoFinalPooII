@@ -7,9 +7,8 @@ import java.util.Comparator;
 public enum AbstractItemSortBy implements Sorter<AbstractItem> {
     ID;
 
-
     @Override
-    public Comparator<? super AbstractItem> sortAscending() {
+    public Comparator<AbstractItem> sortAscending() {
         return Comparator.comparingInt(AbstractItem::getId);
     }
 }

@@ -2,6 +2,7 @@ package view.console;
 
 import model.item.AbstractItem;
 import model.manager.*;
+import model.sorting.SortingConfig;
 import org.jetbrains.annotations.Nullable;
 import view.App;
 
@@ -87,6 +88,7 @@ public class ConsoleApp implements App {
         FeeManager.getInstance().save();
         BillManager.getInstance().save();
         ClientManager.getInstance().save();
+        SortingConfig.save();
 
         System.out.println("(i) Data saved");
     }

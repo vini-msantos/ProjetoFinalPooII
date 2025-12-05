@@ -1,8 +1,7 @@
 package model.manager;
 
-import model.item.Bill;
 import model.item.Client;
-import model.sorting.ClientSortBy;
+import model.sorting.SortingConfig;
 import model.sorting.SortingOption;
 import model.util.Serializer;
 import model.util.Status;
@@ -17,7 +16,7 @@ public class ClientManager extends AbstractManager<Client> {
     private static ClientManager instance;
 
     protected ClientManager() {
-        super(new SortingOption<>(ClientSortBy.NAME, false));
+        super();
     }
     
     public static ClientManager getInstance() {
@@ -40,6 +39,16 @@ public class ClientManager extends AbstractManager<Client> {
     public Status createClient(@NotNull String name, String phoneNumber) {
         Client client = new Client(getIdCounter(), name, phoneNumber);
         return add(client);
+    }
+
+    @Override
+    public SortingOption<Client> getSortingOption() {
+        return SortingConfig.getClientSortingOption();
+    }
+
+    @Override
+    public void setSortingOption(SortingOption<Client> sortingOption) {
+        SortingConfig.setClientSortingOption(sortingOption);
     }
 
     @Override

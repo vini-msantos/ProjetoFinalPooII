@@ -8,7 +8,7 @@ public enum ClientSortBy implements Sorter<Client> {
     NAME;
 
     @Override
-    public Comparator<? super Client> sortAscending() {
+    public Comparator<Client> sortAscending() {
         return switch (this) {
             case ID -> Comparator.comparingInt(Client::getId);
             case NAME -> Comparator.comparing(Client::getName);

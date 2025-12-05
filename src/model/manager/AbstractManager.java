@@ -2,25 +2,21 @@ package model.manager;
 
 import model.item.AbstractItem;
 import model.item.ItemCollection;
-import model.sorting.AbstractItemSortBy;
 import model.sorting.SortingOption;
 import model.util.Status;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
 public abstract class AbstractManager<T extends AbstractItem> implements Serializable {
     private final ItemCollection<T> items;
-    private SortingOption<? super T> sortingOption;
     private int idCounter;
 
-    protected AbstractManager(SortingOption<T> sortingOption) {
+    protected AbstractManager() {
         this.items = new ItemCollection<>();
-        this.sortingOption = sortingOption;
         this.idCounter = 0;
     }
 
@@ -45,25 +41,16 @@ public abstract class AbstractManager<T extends AbstractItem> implements Seriali
         return items.remove(id);
     }
 
-    public Comparator<? super T> getComparator() {
-        return sortingOption.getComparator();
-    }
-
-    public void setSortingOption(@NotNull SortingOption<T> sortingOption) {
-        this.sortingOption = sortingOption;
-    }
-
-    public SortingOption<? super T> getSortingOption() {
-        return sortingOption;
-    }
+    public abstract SortingOption<T> getSortingOption();
+    public abstract void setSortingOption(SortingOption<T> sortingOption);
 
     public List<T> list() {
-        return items.list(getComparator());
+        return items.list(getSortingOption());
     }
 
     public abstract List<T> searchName(@Nullable String prefix);
     protected List<T> search(@NotNull Function<T, Object> getter, @NotNull String prefix) {
-        return items.search(getComparator(), getter, prefix);
+        return items.search(getSortingOption(), getter, prefix);
     }
 
     public int getIdCounter() {

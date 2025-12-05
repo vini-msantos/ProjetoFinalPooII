@@ -2,6 +2,7 @@ package model.item;
 
 import model.manager.FeeManager;
 import model.manager.ProductManager;
+import model.sorting.SortingConfig;
 import model.util.Status;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -84,11 +85,19 @@ public class Bill extends AbstractItem {
     }
 
     public List<ProductWithQuantity> listProducts() {
-        return products.list(ProductManager.getInstance().getComparator());
+        return products.list(SortingConfig.getQuantifiableProductSortingOption());
+    }
+
+    public List<ProductWithQuantity> searchProducts(String query) {
+        return products.search(SortingConfig.getQuantifiableProductSortingOption(), Product::getName, query);
+    }
+
+    public List<Fee> searchFees(String query) {
+        return fees.search(SortingConfig.getFeeSortingOption(), Fee::getName, query);
     }
 
     public List<Fee> listFees() {
-        return fees.list(FeeManager.getInstance().getComparator());
+        return fees.list(SortingConfig.getFeeSortingOption());
     }
 
     public BigDecimal getTotal() {

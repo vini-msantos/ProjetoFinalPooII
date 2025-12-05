@@ -34,7 +34,7 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
         createItemButton.setText("Create " + itemName);
         deleteItemButton.setText("Delete " + itemName);
         editItemButton.setText("Edit " + itemName);
-        itemViewPanel.setupItemView(manager::searchName, manager, sorters);
+        itemViewPanel.setupItemView(manager::searchName, manager::getSortingOption, manager::setSortingOption, sorters);
 
         setupListeners();
 

@@ -8,10 +8,7 @@ import model.manager.BillManager;
 import model.manager.ClientManager;
 import model.manager.FeeManager;
 import model.manager.ProductManager;
-import model.sorting.BillSortBy;
-import model.sorting.ClientSortBy;
-import model.sorting.FeeSortBy;
-import model.sorting.ProductSortBy;
+import model.sorting.*;
 import view.console.BillView;
 import view.gui.itemDialog.ItemSearchDialog;
 import view.gui.managerView.ClientManagerView;
@@ -42,17 +39,32 @@ public class GenericDialogs {
     }
     
     public static Product searchProduct(Component parent) {
-        ItemSearchDialog<Product> dialog = new ItemSearchDialog<>(ProductManager.getInstance(), ProductSortBy.values());
+        ItemSearchDialog<Product> dialog = new ItemSearchDialog<>(
+                ProductManager.getInstance()::searchName,
+                SortingConfig::getProductSortingOption,
+                SortingConfig::setProductSortingOption,
+                ProductSortBy.values()
+        );
         return dialog.getSelected();
     }
 
     public static Fee searchFee(Component parent) {
-        ItemSearchDialog<Fee> dialog = new ItemSearchDialog<>(FeeManager.getInstance(), FeeSortBy.values());
+        ItemSearchDialog<Fee> dialog = new ItemSearchDialog<>(
+                FeeManager.getInstance()::searchName,
+                SortingConfig::getFeeSortingOption,
+                SortingConfig::setFeeSortingOption,
+                FeeSortBy.values()
+        );
         return dialog.getSelected();
     }
 
     public static Client searchClient(Component parent) {
-        ItemSearchDialog<Client> dialog = new ItemSearchDialog<>(ClientManager.getInstance(), ClientSortBy.values());
+        ItemSearchDialog<Client> dialog = new ItemSearchDialog<>(
+                ClientManager.getInstance()::searchName,
+                SortingConfig::getClientSortingOption,
+                SortingConfig::setClientSortingOption,
+                ClientSortBy.values()
+        );
         return dialog.getSelected();
     }
 }
