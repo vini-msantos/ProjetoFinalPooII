@@ -23,7 +23,7 @@ public class ItemSearchDialog<T extends AbstractItem> extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         setupListeners();
-        itemView.setupItemView(manager, sorters);
+        itemView.setupItemView(manager::searchName, manager, sorters);
 
         pack();
         setLocationRelativeTo(null);

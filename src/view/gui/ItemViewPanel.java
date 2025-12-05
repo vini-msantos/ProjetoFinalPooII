@@ -8,16 +8,16 @@ import model.sorting.SortingOption;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.function.Function;
 
 public class ItemViewPanel<T extends AbstractItem> extends JPanel {
-    private JPanel listPanel;
-    private JScrollPane listScrollPane;
     private JList<T> itemList;
     private JCheckBox reversedCheckBox;
     private JComboBox<Sorter<T>> sortOptionBox;
     private JTextField searchField;
-    private JPanel mainPanel;
     private JButton searchButton;
+    private JPanel mainPanel;
+    private Function<String, List<T>> searcher;
     private AbstractManager<T> manager;
     private final DefaultListModel<T> listModel;
 
@@ -26,18 +26,19 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         itemList.setModel(listModel);
     }
 
-    public void setupItemView(AbstractManager<T> manager, Sorter<T>[] sortingOptions) {
+    public void setupItemView(Function<String, List<T>> searcher, AbstractManager<T> manager, Sorter<T>[] sortingOptions) {
         sortOptionBox.setModel(new DefaultComboBoxModel<>(sortingOptions));
         sortOptionBox.setSelectedItem(manager.getSortingOption().getSorter());
 
         this.manager = manager;
+        this.searcher = searcher;
 
         reloadList();
         setupListeners();
     }
 
     public void reloadList() {
-        List<T> newList = manager.searchName(searchField.getText().trim());
+        List<T> newList = searcher.apply(searchField.getText().trim());
         listModel.clear();
         listModel.addAll(newList);
     }
