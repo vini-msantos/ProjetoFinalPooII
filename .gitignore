@@ -32,5 +32,6 @@ data/
 .idea/
 ProjetoFinalFinal.iml
 model/
+view/
 
 Main.class
