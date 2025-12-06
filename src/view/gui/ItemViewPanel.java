@@ -12,6 +12,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Classe que serve para exibir uma lista de itens, permite a seleção de
+ * elementos, pesquisa, e escolha da opção de ordenamento.
+ * @param <T> Tipo do item a ser mostrado.
+ */
 public class ItemViewPanel<T extends AbstractItem> extends JPanel {
     private JList<T> itemList;
     private JCheckBox reversedCheckBox;
@@ -27,6 +32,15 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         itemList.setModel(listModel);
     }
 
+    /**
+     * Método que prepara a lista, fornecendo-a com as funções necessárias
+     * e com as opções de ordenamento disponíveis.
+     *
+     * @param searcher Função para a busca dos elementos com base num prefixo.
+     * @param getSort Função para pegar a opção de ordenamento atual.
+     * @param setSort Função para alterar a opção de ordenamento.
+     * @param sortingOptions Lista com as opções de ordenamento.
+     */
     public void setupItemView(
             Function<String, List<T>> searcher,
             Supplier<SortingOption<T>> getSort,
@@ -34,8 +48,8 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
             Sorter<T>[] sortingOptions
     ) {
         sortOptionBox.setModel(new DefaultComboBoxModel<>(sortingOptions));
-        sortOptionBox.setSelectedItem(getSort.get().getSorter());
-        reversedCheckBox.setSelected(getSort.get().isReversed());
+        sortOptionBox.setSelectedItem(getSort.get().sorter());
+        reversedCheckBox.setSelected(getSort.get().reversed());
 
         this.searcher = searcher;
 
@@ -43,10 +57,22 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
         setupListeners(setSort);
     }
 
+    /**
+     * Recarrega a lista. Necessário caso tenha ocorrido alguma alteração
+     * em seu conteúdo ou caso o parâmetro de busca tenha mudado.
+     */
     public void reloadList() {
         List<T> newList = searcher.apply(searchField.getText().trim());
         listModel.clear();
         listModel.addAll(newList);
+    }
+
+    public List<T> getSelectedValuesList() {
+        return itemList.getSelectedValuesList();
+    }
+
+    public T getSelectedValue() {
+        return itemList.getSelectedValue();
     }
 
     private void setupListeners(Consumer<SortingOption<T>> setSort) {
@@ -65,13 +91,5 @@ public class ItemViewPanel<T extends AbstractItem> extends JPanel {
 
         searchButton.addActionListener(e -> reloadList());
         searchField.addActionListener(e -> reloadList());
-    }
-
-    public List<T> getSelectedValuesList() {
-        return itemList.getSelectedValuesList();
-    }
-
-    public T getSelectedValue() {
-        return itemList.getSelectedValue();
     }
 }

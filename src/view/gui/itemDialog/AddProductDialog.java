@@ -3,7 +3,7 @@ package view.gui.itemDialog;
 import model.item.Product;
 import model.item.ProductWithQuantity;
 import model.manager.ProductManager;
-import view.gui.util.FieldFactory;
+import view.gui.util.Fields;
 import view.gui.util.GenericDialogs;
 
 import javax.swing.*;
@@ -33,10 +33,10 @@ public class AddProductDialog extends JDialog {
 
         setTitle("Adding Product");
 
-        FieldFactory.editIdField(idField);
-        FieldFactory.editNameField(nameField, null);
-        FieldFactory.editPriceField(priceField, null);
-        FieldFactory.editQuantityField(quantityField, null);
+        Fields.editIdField(idField);
+        Fields.editNameField(nameField, null);
+        Fields.editPriceField(priceField, null);
+        Fields.editQuantityField(quantityField, null);
 
         setupListeners();
 
@@ -67,7 +67,7 @@ public class AddProductDialog extends JDialog {
     }
 
     private void reload() {
-        if (!FieldFactory.validId(idField)) {
+        if (!Fields.validId(idField)) {
             JOptionPane.showMessageDialog(this, "Please enter a valid ID", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -95,7 +95,7 @@ public class AddProductDialog extends JDialog {
     }
 
     private void onOK() {
-        if (!FieldFactory.validId(idField) || nameField.getText().isBlank() || !FieldFactory.validPrice(priceField) || !FieldFactory.validQuantity(quantityField)) {
+        if (!Fields.validId(idField) || nameField.getText().isBlank() || !Fields.validPrice(priceField) || !Fields.validQuantity(quantityField)) {
             JOptionPane.showMessageDialog(this, "Please fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

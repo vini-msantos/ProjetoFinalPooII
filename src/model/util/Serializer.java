@@ -2,6 +2,9 @@ package model.util;
 
 import java.io.*;
 
+/**
+ * Classe com métodos para serialização e desserialização.
+ */
 public abstract class Serializer {
     private final static String directoryPath = "data";
     public static <T> T load(String path) {

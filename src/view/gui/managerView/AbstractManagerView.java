@@ -12,6 +12,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+
+/**
+ * Classe que define o comportamento padrão dos gerenciadores de itens.
+ * Permite a criação, edição e remoção de registros.
+ * @param <T> Tipo do item que vai ser gerenciado.
+ */
 public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame {
     private JPanel panel;
     private JButton createItemButton;
@@ -101,11 +107,23 @@ public abstract class AbstractManagerView<T extends AbstractItem> extends JFrame
         });
     }
 
-    public AbstractManager<T> getManager() {
+    protected AbstractManager<T> getManager() {
         return manager;
     }
 
+    /**
+     * Método abstrato que solicita as informações ao usuário para
+     * cadastrar um novo item.
+     * @param idCounter Valor atual do contador de ID do gerenciador do item.
+     * @return Um novo item criado. Pode ser null caso o usuário cancele a operação
+     */
     protected abstract T newItemPopUp(int idCounter);
 
+
+    /**
+     * Método abstrato que abre um diálogo para a edição das informações de um item.
+     * @param originalItem Item que vai ser modificado.
+     * @return Item resultante da edição. Pode ser null caso o usuário cancele a operação.
+     */
     protected abstract T editItemPopUp(T originalItem);
 }

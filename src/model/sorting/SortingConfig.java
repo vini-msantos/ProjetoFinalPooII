@@ -6,6 +6,11 @@ import model.util.Status;
 
 import java.io.Serializable;
 
+
+/**
+ * Classe singleton que armazena as configurações de ordenamento para todas os
+ * tipos de itens.
+ */
 public class SortingConfig implements Serializable {
     private static final String filePath = "sortingConfig.ser";
     private static SortingConfig instance;

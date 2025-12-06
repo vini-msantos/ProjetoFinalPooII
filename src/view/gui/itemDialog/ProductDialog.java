@@ -2,7 +2,7 @@ package view.gui.itemDialog;
 
 import model.item.Product;
 import model.item.ProductWithQuantity;
-import view.gui.util.FieldFactory;
+import view.gui.util.Fields;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +11,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 
+/**
+ * Diferente das outras classes de criação e edição de itens, essa serve tanto para
+ * produtos (no contexto do gerenciador) quanto para produtos com quantidades
+ * (dentro de uma comanda).
+ */
 public class ProductDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonCreate;
@@ -25,6 +30,15 @@ public class ProductDialog extends JDialog {
     private final boolean withQuantity;
     private final int idCounter;
 
+
+    /**
+     * @param parentComponent A janela que chamou esse diálogo.
+     * @param idCounter O contador atual do gerenciador de produtos.
+     *                  Ou caso esteja editando, o ID do item a ser editado
+     * @param template O item a ser editado, caso esteja criando use null.
+     * @param withQuantity Se o item possui uma quantidade atrelada a ele.
+     * @param templateQuantity A quantidade do item a ser editado, caso não tenha use null.
+     */
     public ProductDialog(Component parentComponent, int idCounter, Product template, boolean withQuantity, Integer templateQuantity) {
         setContentPane(contentPane);
         setModal(true);
@@ -46,9 +60,9 @@ public class ProductDialog extends JDialog {
         mainPanel.setBorder(BorderFactory.createTitledBorder(title + " product of ID " + idCounter));
         setTitle(title + " Product");
 
-        FieldFactory.editNameField(nameField, templateName);
-        FieldFactory.editPriceField(priceField, templatePrice);
-        FieldFactory.editQuantityField(quantityField, templateQuantity);
+        Fields.editNameField(nameField, templateName);
+        Fields.editPriceField(priceField, templatePrice);
+        Fields.editQuantityField(quantityField, templateQuantity);
 
         quantityLabel.setVisible(withQuantity);
         quantityField.setVisible(withQuantity);
@@ -62,8 +76,8 @@ public class ProductDialog extends JDialog {
     private void onCreate() {
         if (
                 nameField.getText().isBlank()
-                || !FieldFactory.validPrice(priceField)
-                || (withQuantity && !FieldFactory.validQuantity(quantityField))
+                || !Fields.validPrice(priceField)
+                || (withQuantity && !Fields.validQuantity(quantityField))
         ) {
             JOptionPane.showMessageDialog(this, "Fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;

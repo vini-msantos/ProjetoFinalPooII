@@ -7,16 +7,131 @@ import model.sorting.*;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Classe responsável por lidar com os comandos do usuário, com uso de uma chain of responsibility.
+ * <p> Um Handler é criado e associado ao comando inserido, depois são chamados os métodos que vão responder
+ * a esse comando. Cada método primeiramente verifica se o comando já foi respondido e caso já tenha sido
+ * ele não executa nada e passa adiante.</p>
+ * <p>Caso nenhum método anterior tenha consumido o comando, o atual vai checar se o comando é de
+ * sua responsabilidade e responder de acordo</p>
+ */
 public class Handler {
     private final String command;
     private boolean done = false;
 
-    public Handler(String command) {
+    Handler(String command) {
         this.command = command;
+    }
+
+
+    /**
+     * Método que retorna se o comando foi consumido por um dos métodos anteriores.
+     * Vale mencionar que ele ter sido consumido não significa que o comando foi
+     * válido e executado com sucesso.
+     */
+    public boolean isDone() {
+        return done;
+    }
+
+    /**
+     * Método responsável pela lógica do estado de edição da comanda. Caso
+     * nenhuma comanda esteja sendo editada, também permite o usuário a entrar
+     * em tal modo.
+     */
+    Handler handleBillContext(ConsoleApp app) {
+        if (done) { return this; }
+
+        if (app.inBillContext()) {
+            Bill bill = app.getView().getBill();
+
+            return this
+                    .handleExitBillView(app)
+                    .handleAddBillFee(bill)
+                    .handleAddBillProduct(bill)
+                    .handleRemoveBillItem(bill)
+                    .handleScrollBillView(app.getView())
+                    .handleEditBillFee(bill)
+                    .handleEditBillProduct(bill)
+                    .handleSetBillState(bill);
+
+        } else {
+            return handleEnterBillContext(app);
+        }
+    }
+
+    /**
+     * Método que permite o usuário mudar a opção de ordenamento para os diferentes tipos
+     * de itens.
+     */
+    Handler handleSetSortOption() {
+        if (done) { return this; }
+        return this
+                .handleSetBillSort()
+                .handleSetClientSort()
+                .handleSetFeeSort()
+                .handleSetProductSort();
+    }
+
+    /**
+     * Método responsável por permitir a criação, edição e remoção de itens
+     * de seus respectivos registros (managers).
+     */
+    Handler handleEntries(ConsoleApp app) {
+        if (done) { return this; }
+        return this
+                .handleCreateBill()
+                .handleCreateFee()
+                .handleCreateProduct()
+                .handleCreateClient()
+                .handleEditClientEntry()
+                .handleEditFeeEntry()
+                .handleEditProductEntry()
+                .handleDeleteEntry(app);
+    }
+
+    /**
+     * Método responsável por permitir o usuário a executar uma busca sem contexto, ou seja, ela
+     * não espera que o mesmo selecione um item.
+     */
+    Handler handleSearch() {
+        if (done) { return this; }
+        Map<String, String> groups = matchRegex("search (?<type>fee|product|bill|client)(?: \"(?<query>(?:\\w| )+)\")?$", command);
+        if (groups == null) { return this; }
+        done = true;
+
+        String query = groups.get("query");
+        AbstractManager<? extends AbstractItem> manager = switch (groups.get("type")) {
+            case "fee" -> FeeManager.getInstance();
+            case "product" -> ProductManager.getInstance();
+            case "bill" -> BillManager.getInstance();
+            case "client" -> ClientManager.getInstance();
+            case null, default -> null;
+        };
+        if (manager == null) { return this; }
+        ConsoleApp.getSearchResponse(manager, query);
+
+        return this;
+    }
+
+    /**
+     * Método ajudante que serve para pegar o ID inserido pelo usuário no comando, ou
+     * caso o mesmo tenha optado por uma pesquisa, retorna o ID selecionado nela.
+     */
+    private static <T extends AbstractItem> Integer getIdOrSearch(Map<String, String> groups, AbstractManager<T> manager) {
+        if (groups.get("id") != null) {
+            return Integer.parseInt(groups.get("id"));
+        }
+        String query = groups.get("query");
+        if (query == null) { query = ""; }
+        Integer id = ConsoleApp.getSearchResponse(manager, query);
+        if (id == null || manager.get(id) == null) {
+            System.out.println("(!) Search response should be a valid ID");
+            return null;
+        }
+        return id;
     }
 
     private static Map<String, String> matchRegex(String regex, String command) {
@@ -120,26 +235,6 @@ public class Handler {
         return this;
     }
 
-    public Handler handleBillContext(ConsoleApp app) {
-        if (done) { return this; }
-
-        if (app.inBillContext()) {
-            Bill bill = app.getView().getBill();
-
-            return this
-                    .handleExitBillView(app)
-                    .handleAddBillFee(bill)
-                    .handleAddBillProduct(bill)
-                    .handleRemoveBillItem(bill)
-                    .handleScrollBillView(app.getView())
-                    .handleEditBillFee(bill)
-                    .handleEditBillProduct(bill)
-                    .handleSetBillState(bill);
-
-        } else {
-            return handleEnterBillContext(app);
-        }
-    }
 
     private Handler handleScrollBillView(BillView view) {
         if (done) { return this; }
@@ -186,13 +281,12 @@ public class Handler {
         app.enterBillContext(id);
         return this;
     }
-
     private Handler handleAddBillFee(Bill bill) {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("add fee (?:(?<id>\\d+)|(?<search>\\?)(?: \"(?<query>(?:\\w| )+)\")?)(?:$| (?<percentage>-?\\d+)%$)", command);
         if (groups == null) { return this; }
         done = true;
-        
+
         String percentage = groups.get("percentage");
         Integer id = getFeeIdOrSearch(groups);
 
@@ -200,11 +294,10 @@ public class Handler {
 
         BigDecimal parsedPercentage = null;
         if (percentage != null) { parsedPercentage = BigDecimal.valueOf(Double.parseDouble(percentage) / 100); }
-        
+
         bill.addFee(id, parsedPercentage);
         return this;
     }
-
     private Handler handleAddBillProduct(Bill bill) {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("add product (?:(?<id>\\d+)|(?<search>\\?)(?: \"(?<query>(?:\\w| )+)\")?)(?:$| (?<quantity>\\d+))(?:$| (?<price>\\d+(?:\\.\\d{1,2})?)$)", command);
@@ -226,31 +319,20 @@ public class Handler {
         return this;
     }
 
+    private static Integer getProductIdOrSearch(Map<String, String> groups) {
+        return getIdOrSearch(groups, ProductManager.getInstance());
+    }
 
-    public static Integer getProductIdOrSearch(Map<String, String> groups) {
-        return getIdOrSearch(groups, ProductManager.getInstance(), Product::getName);
+    private static Integer getFeeIdOrSearch(Map<String, String> groups) {
+        return getIdOrSearch(groups, FeeManager.getInstance());
     }
-    public static Integer getFeeIdOrSearch(Map<String, String> groups) {
-        return getIdOrSearch(groups, FeeManager.getInstance(), Fee::getName);
+
+    private static Integer getClientIdOrSearch(Map<String, String> groups) {
+        return getIdOrSearch(groups, ClientManager.getInstance());
     }
-    public static Integer getClientIdOrSearch(Map<String, String> groups) {
-        return getIdOrSearch(groups, ClientManager.getInstance(), Client::getName);
-    }
-    public static Integer getBillIdOrSearch(Map<String, String> groups) {
-        return getIdOrSearch(groups, BillManager.getInstance(), Bill::getClientName);
-    }
-    private static <T extends AbstractItem> Integer getIdOrSearch(Map<String, String> groups, AbstractManager<T> manager, Function<T, Object> getter) {
-        if (groups.get("id") != null) {
-            return Integer.parseInt(groups.get("id"));
-        }
-        String query = groups.get("query");
-        if (query == null) { query = ""; }
-        Integer id = ConsoleApp.getSearchResponse(manager, query);
-        if (id == null || manager.get(id) == null) {
-            System.out.println("(!) Search response should be a valid ID");
-            return null;
-        }
-        return id;
+
+    private static Integer getBillIdOrSearch(Map<String, String> groups) {
+        return getIdOrSearch(groups, BillManager.getInstance());
     }
 
     private Handler handleRemoveBillItem(Bill bill) {
@@ -269,21 +351,17 @@ public class Handler {
     }
 
 
-    public boolean isDone() {
-        return done;
-    }
-
     private Handler handleEditProductEntry() {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("edit product entry (?:(?<id>\\d+)|(?<search>\\?)(?: \"(?<query>(?:\\w| )+)\")?)(?: --name \"(?<name>(?:\\w| )+)\")?(?: --price (?<price>\\d+(?:\\.\\d{1,2})?))?$", command);
         if (groups == null) { return this; }
         done = true;
-        
+
         ProductManager pm = ProductManager.getInstance();
-        Integer id = getIdOrSearch(groups, pm, Product::getName);
+        Integer id = getIdOrSearch(groups, pm);
 
         if (id == null) { return this; }
-        
+
         Product product = pm.get(id);
         if (groups.get("name") != null) { product.setName(groups.get("name")); }
         if (groups.get("price") != null) {
@@ -446,29 +524,7 @@ public class Handler {
         return this;
     }
 
-    public Handler handleSetSortOption() {
-        if (done) { return this; }
-        return this
-                .handleSetBillSort()
-                .handleSetClientSort()
-                .handleSetFeeSort()
-                .handleSetProductSort();
-    }
-
-    public Handler handleEntries(ConsoleApp app) {
-        if (done) { return this; }
-        return this
-                .handleCreateBill()
-                .handleCreateFee()
-                .handleCreateProduct()
-                .handleCreateClient()
-                .handleEditClientEntry()
-                .handleEditFeeEntry()
-                .handleEditProductEntry()
-                .handleDeleteEntry(app);
-    }
-
-    public Handler handleEditBillFee(Bill bill) {
+    private Handler handleEditBillFee(Bill bill) {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("edit fee (?<id>\\d+) (?<percentage>-?\\d+)%$", command);
         if (groups == null) { return this; }
@@ -484,7 +540,7 @@ public class Handler {
         return this;
     }
 
-    public Handler handleEditBillProduct(Bill bill) {
+    private Handler handleEditBillProduct(Bill bill) {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("edit product (?<id>\\d+)(?: --quantity (?<quantity>\\d+))?(?: --price (?<price>\\d+(?:\\.\\d{1,2})?))?$", command);
         if (groups == null) { return this; }
@@ -501,27 +557,7 @@ public class Handler {
         return this;
     }
 
-    public Handler handleSearch() {
-        if (done) { return this; }
-        Map<String, String> groups = matchRegex("search (?<type>fee|product|bill|client)(?: \"(?<query>(?:\\w| )+)\")?$", command);
-        if (groups == null) { return this; }
-        done = true;
-
-        String query = groups.get("query");
-        AbstractManager<? extends AbstractItem> manager = switch (groups.get("type")) {
-            case "fee" -> FeeManager.getInstance();
-            case "product" -> ProductManager.getInstance();
-            case "bill" -> BillManager.getInstance();
-            case "client" -> ClientManager.getInstance();
-            case null, default -> null;
-        };
-        if (manager == null) { return this; }
-        ConsoleApp.getSearchResponse(manager, query);
-
-        return this;
-    }
-
-    public Handler handleSetBillState(Bill bill) {
+    private Handler handleSetBillState(Bill bill) {
         if (done) { return this; }
         switch (command) {
             case "set bill as paid" -> {
@@ -540,7 +576,7 @@ public class Handler {
         return this;
     }
 
-    public Handler handleGetString(StringBuilder prefix) {
+    Handler handleGetString(StringBuilder prefix) {
         if (done) { return this; }
         Map<String, String> groups = matchRegex("\"(?<value>(?:\\w| )*)\"", command);
         if (groups != null) {

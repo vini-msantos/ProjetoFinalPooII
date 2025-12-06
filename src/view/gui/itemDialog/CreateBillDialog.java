@@ -4,7 +4,7 @@ import model.item.Bill;
 import model.item.Client;
 import model.manager.BillManager;
 import model.manager.ClientManager;
-import view.gui.util.FieldFactory;
+import view.gui.util.Fields;
 import view.gui.util.GenericDialogs;
 
 import javax.swing.*;
@@ -31,7 +31,7 @@ public class CreateBillDialog extends JDialog {
         setTitle("Creating Bill");
         mainPanel.setBorder(BorderFactory.createTitledBorder("Creating bill of ID " + BillManager.getInstance().getIdCounter()));
 
-        FieldFactory.editIdField(clientIdField);
+        Fields.editIdField(clientIdField);
 
         setupListeners();
 
@@ -65,7 +65,7 @@ public class CreateBillDialog extends JDialog {
     }
 
     private void onOK() {
-        if (!FieldFactory.validId(clientIdField)) {
+        if (!Fields.validId(clientIdField)) {
             JOptionPane.showMessageDialog(this, "Fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

@@ -14,6 +14,10 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * A tela de menu permite o acesso as outras telas da aplicação, também permite o usuário
+ * salvar as informações. Ao fechar o menu, a aplicação se encerra.
+ */
 public class Menu extends JFrame {
     private JButton productManagerButton;
     private JButton feeManagerButton;

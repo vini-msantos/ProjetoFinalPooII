@@ -2,18 +2,31 @@ package view.console;
 
 import java.util.List;
 
-public abstract class Display {
-    public static void displayStartMessage() {
+
+/**
+ * Classe ajudante com alguns métodos estáticos relacionados à escrita de tela.
+ */
+abstract class Display {
+     static void displayStartMessage() {
         System.out.println("[---- Welcome to Biller v1.0 ----]");
         System.out.println("\nFor a list of all available commands, type help.\n");
     }
 
-    public static void invalidAction(String command, String message) {
+     static void invalidAction(String command, String message) {
         System.out.println("(!) '" + command + "' is not a valid command, type help for info on valid actions");
         if (message != null) { System.out.println(message); }
     }
 
-    public static <T> void displayTruncatedList(List<T> list, int page, int amount) {
+    /**
+     * Método que serve para mostrar apenas alguns elementos de uma lista por vez. Especifica caso
+     * a lista esteja vazia ou se possuí mais elementos em páginas anteriores ou posteriores.
+     *
+     * @param list Lista dos itens.
+     * @param page Qual a porção dessa lista que será mostrada.
+     * @param amount Quantidade de itens mostrados por vez.
+     * @param <T> Tipo dos itens.
+     */
+     static <T> void displayTruncatedList(List<T> list, int page, int amount) {
         if (list.isEmpty()) {
             System.out.println("No entries.");
             return;
@@ -30,7 +43,7 @@ public abstract class Display {
         }
     }
 
-    public static void help() {
+    static void help() {
         System.out.println("""
                 Command types:
                     There are three types of commands, some don't require a bill (general commands) while

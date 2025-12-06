@@ -2,7 +2,7 @@ package view.gui.itemDialog;
 
 import model.item.Fee;
 import model.manager.FeeManager;
-import view.gui.util.FieldFactory;
+import view.gui.util.Fields;
 import view.gui.util.GenericDialogs;
 
 import javax.swing.*;
@@ -32,9 +32,9 @@ public class AddFeeDialog extends JDialog {
 
         setTitle("Adding Fee");
 
-        FieldFactory.editIdField(idField);
-        FieldFactory.editNameField(nameField, null);
-        FieldFactory.editPercentageField(percentageField, null);
+        Fields.editIdField(idField);
+        Fields.editNameField(nameField, null);
+        Fields.editPercentageField(percentageField, null);
 
         setupListeners();
 
@@ -66,7 +66,7 @@ public class AddFeeDialog extends JDialog {
     }
 
     private void reload() {
-        if (!FieldFactory.validId(idField)) {
+        if (!Fields.validId(idField)) {
             JOptionPane.showMessageDialog(this, "Please enter a valid ID", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -94,7 +94,7 @@ public class AddFeeDialog extends JDialog {
     }
 
     private void onOK() {
-        if (nameField.getText().isBlank() || !FieldFactory.validId(idField) || !FieldFactory.validPercentage(percentageField)) {
+        if (nameField.getText().isBlank() || !Fields.validId(idField) || !Fields.validPercentage(percentageField)) {
             JOptionPane.showMessageDialog(this, "Please fill out all fields correctly.", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

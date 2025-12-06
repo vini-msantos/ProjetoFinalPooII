@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.function.Function;
 
 
+/**
+ * Uma coleção genérica que permite algumas operações como adição, remoção, edição, busca e listagem.
+ * <p>A implementação usa um HashMap cujas chaves são o ID de seus respectivos itens.</p>
+ * @param <T> O tipo de item que será armazenado.
+ */
 public class ItemCollection<T extends AbstractItem> implements Serializable {
     private final Map<Integer, T> items;
 
@@ -23,6 +28,12 @@ public class ItemCollection<T extends AbstractItem> implements Serializable {
                 .toList();
     }
 
+    /**
+     * @param sortingOption A opção de ordenamento que será usada.
+     * @param getter Função que pega o atributo do item que será filtrado.
+     * @param prefix Usado para selecionar quais itens serão retornados.
+     * @return Uma lista com os itens que correspondem com a busca.
+     */
     public List<T> search(SortingOption<T> sortingOption, Function<T, Object> getter, String prefix) {
         return list(sortingOption).stream()
                 .filter(item -> getter.apply(item).toString().toLowerCase().startsWith(prefix.toLowerCase()))

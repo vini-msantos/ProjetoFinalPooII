@@ -10,11 +10,14 @@ import model.sorting.ClientSortBy;
 import model.sorting.FeeSortBy;
 import model.sorting.ProductSortBy;
 import model.sorting.SortingConfig;
-import view.gui.itemDialog.ItemSearchDialog;
+import view.gui.ItemSearchDialog;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classe com alguns diálogos usados por outras partes da aplicação.
+ */
 public class GenericDialogs {
     public static boolean checkUnsavedChanges(Component parent, boolean hasUnsavedChanges) {
         if (!hasUnsavedChanges) { return true; }
@@ -34,9 +37,11 @@ public class GenericDialogs {
         
         return response == JOptionPane.YES_OPTION;
     }
-    
+
+    // Os métodos abaixo abrem o diálogo de pesquisa de item e pegam a resposta do usuário.
     public static Product searchProduct(Component parent) {
         ItemSearchDialog<Product> dialog = new ItemSearchDialog<>(
+                parent,
                 ProductManager.getInstance()::searchName,
                 SortingConfig::getProductSortingOption,
                 SortingConfig::setProductSortingOption,
@@ -47,6 +52,7 @@ public class GenericDialogs {
 
     public static Fee searchFee(Component parent) {
         ItemSearchDialog<Fee> dialog = new ItemSearchDialog<>(
+                parent,
                 FeeManager.getInstance()::searchName,
                 SortingConfig::getFeeSortingOption,
                 SortingConfig::setFeeSortingOption,
@@ -57,6 +63,7 @@ public class GenericDialogs {
 
     public static Client searchClient(Component parent) {
         ItemSearchDialog<Client> dialog = new ItemSearchDialog<>(
+                parent,
                 ClientManager.getInstance()::searchName,
                 SortingConfig::getClientSortingOption,
                 SortingConfig::setClientSortingOption,

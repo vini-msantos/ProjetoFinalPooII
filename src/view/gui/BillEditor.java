@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * Janela que permite a edição dos itens de uma comanda.
+ */
 public class BillEditor extends JFrame {
     private JPanel mainPanel;
     private JPanel contentPanel;
@@ -144,12 +147,19 @@ public class BillEditor extends JFrame {
         });
     }
 
+
+    /**
+     * Método que recarrega as listas de itens e o valor total da comanda.
+     */
     private void reload() {
         productsView.reloadList();
         feesView.reloadList();
         totalLabel.setText(String.format("$%.2f",bill.getTotal().doubleValue()));
     }
 
+
+    // Abaixo temos métodos ajudantes que agrupam o comportamento em comum
+    // dos botões de edição e remoção tanto para produtos quanto para taxas
     private <T extends AbstractItem> ActionListener editButtonListener(String itemName, ItemViewPanel<T> itemView, Consumer<T> update, Function<T, T> dialog) {
         return e -> {
             T selected = itemView.getSelectedValue();

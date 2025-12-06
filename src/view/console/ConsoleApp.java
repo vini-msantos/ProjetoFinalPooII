@@ -16,6 +16,11 @@ public class ConsoleApp implements App {
 
     ConsoleApp() {}
 
+    /**
+     * Loop principal de execução, primeiro ele exibe a visão da comanda (caso tenha uma
+     * aberta), e em seguida é recolhido a entrada do usuário, e então o comando é interpretado.
+     * O loop só é quebrado caso o usuário escolha sair.
+     */
     @Override
     public void run() {
         Display.displayStartMessage();
@@ -43,7 +48,7 @@ public class ConsoleApp implements App {
                     Display.help();
                     continue;
                 }
-            };
+            }
 
             boolean result = new Handler(command)
                     .handleEntries(this)
@@ -58,31 +63,31 @@ public class ConsoleApp implements App {
         }
     }
 
-    public void enterBillContext(int id) {
+    void enterBillContext(int id) {
         view = BillView.fromId(id);
     }
 
-    public void exitBillContext() {
+    void exitBillContext() {
         view = null;
     }
 
-    public void displayBillContext() {
+    void displayBillContext() {
         if (inBillContext()) {
             view.displayBill();
         }
     }
 
-    public BillView getView() {
+    BillView getView() {
         return view;
     }
 
-    public static String getCommand() {
+    static String getCommand() {
         Scanner scanner = new Scanner(System.in);
 
         return scanner.nextLine().trim();
     }
 
-    public static void save() {
+    static void save() {
         ProductManager.getInstance().save();
         FeeManager.getInstance().save();
         BillManager.getInstance().save();
@@ -92,7 +97,19 @@ public class ConsoleApp implements App {
         System.out.println("(i) Data saved");
     }
 
-    public static <T extends AbstractItem> Integer getSearchResponse(
+    /**
+     * Abre uma tela de busca de item, mostrando algumas opções por vez e
+     * esperando uma resposta do usuário (respostas especificadas na tela de help).
+     * Sua função é permitir que no lugar de um ID específico, o usuário pode usar
+     * a busca para selecionar o item que será usado no comando.
+     *
+     * @param manager Fonte da busca dos itens.
+     * @param prefix Usado para filtrar todos os itens que começam com ele.
+     * @param <T> O tipo do item buscado
+     * @return O ID do item selecionado pela busca,
+     * pode retornar null caso o usuário não escolha nenhum item.
+     */
+    static <T extends AbstractItem> Integer getSearchResponse(
             AbstractManager<T> manager,
             String prefix
     ) {
@@ -144,7 +161,7 @@ public class ConsoleApp implements App {
         }
     }
 
-    public boolean inBillContext() {
+    boolean inBillContext() {
         return view != null;
     }
 }

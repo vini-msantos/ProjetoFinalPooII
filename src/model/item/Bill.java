@@ -24,6 +24,11 @@ enum BillState {
     }
 }
 
+
+/**
+ * Classe que representa uma comanda. Possui uma lista de taxas e uma de produtos com quantidade.
+ * É atrelada a um cliente.
+ */
 public class Bill extends AbstractItem {
     private final ItemCollection<ProductWithQuantity> products;
     private final ItemCollection<Fee> fees;
@@ -109,6 +114,11 @@ public class Bill extends AbstractItem {
         return fees.list(SortingConfig.getFeeSortingOption());
     }
 
+    /**
+     * Método que calcula o total, caso não tenha havido mudanças recentes, o valor
+     * não é recalculado, em vez disso a função retorna o resultado salvo em cache.
+     * @return O valor total da comanda.
+     */
     public BigDecimal getTotal() {
         if (!recentChanges) { return total; }
 

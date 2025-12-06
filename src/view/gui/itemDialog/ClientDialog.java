@@ -1,7 +1,7 @@
 package view.gui.itemDialog;
 
 import model.item.Client;
-import view.gui.util.FieldFactory;
+import view.gui.util.Fields;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,8 +39,8 @@ public class ClientDialog extends JDialog {
         mainPanel.setBorder(BorderFactory.createTitledBorder(title + " client of ID " + idCounter));
         setTitle(title + " Client");
 
-        FieldFactory.editNameField(nameField, templateName);
-        FieldFactory.editNameField(phoneNumberField, templatePhoneNumber);
+        Fields.editNameField(nameField, templateName);
+        Fields.editNameField(phoneNumberField, templatePhoneNumber);
 
         setupListeners();
 

@@ -17,6 +17,10 @@ public class BillManagerView extends AbstractManagerView<Bill> {
         return dialog.getBill();
     }
 
+
+    // A diferença da implementação desse método especificamente nessa subclasse é porque a edição
+    // de uma comanda é feita a partir de uma janela especial, em vez de um simples dialogo
+    // como é o caso dos outros itens;
     @Override
     protected Bill editItemPopUp(Bill originalItem) {
         new BillEditor(originalItem);

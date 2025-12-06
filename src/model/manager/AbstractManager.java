@@ -9,6 +9,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
+
+/**
+ * Os Managers são as classes responsáveis pelos registros dos itens, cada uma de
+ * suas implementações concretas é um singleton e podem ser salvas e carregadas
+ * da memória.
+ * <p>Possui um contador de ID, que é incrementado automaticamente quando um item
+ * novo é cadastrado.</p>
+ * <P>Suas implementações sempre tentarão se carregar de um arquivo fonte. Apenas
+ * caso não consigam, um novo objeto é instanciado.</P>
+ * @param <T>
+ */
 public abstract class AbstractManager<T extends AbstractItem> implements Serializable {
     private final ItemCollection<T> items;
     private int idCounter;
@@ -35,8 +46,8 @@ public abstract class AbstractManager<T extends AbstractItem> implements Seriali
         return items.get(id);
     }
 
-    public Status remove(int id) {
-        return items.remove(id);
+    public void remove(int id) {
+        items.remove(id);
     }
 
     public abstract SortingOption<T> getSortingOption();
