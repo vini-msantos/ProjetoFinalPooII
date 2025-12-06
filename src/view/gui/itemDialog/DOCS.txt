@@ -1,0 +1,16 @@
+As classes desse pacote são utilizadas para a criação e edição de itens em seus
+respectivos gerenciadores. E para a adição e edição de produtos e taxas em
+uma comanda.
+
+São diálogos simples com caixas de texto que permitem o usuário a inserção dos dados
+que serão usados para a operação.
+
+No caso da adição de itens em uma comanda, ou na criação de uma nova comanda, o
+usuário também poderá abrir a tela de pesquisa para selecionar um item. Ao
+selecionar as informações do registro deste item serão inseridas automaticamente
+nos seus devidos campos.
+
+Seria mais correto se as classes de criação/edição fossem juntas com a de adição
+na comanda, porém por motivos de não querer reestruturar todo o código em volta
+e por estar funcionando como o esperado, foi-se mantido dessa forma, fica apenas
+a menção de que uma melhoria poderia ser feita nesse aspecto.
