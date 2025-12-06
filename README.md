@@ -1,10 +1,10 @@
 # Obrigado por instalar o Biller™!
-___
+
 ## Sobre
 O Biller™ é um programa voltado para empresas que precisam gerar comandas
 (ou Bills™) para seus clientes a partir de uma base de dados contendo os 
 produtos e taxas que podem ser adicionados.
-___
+
 ## Funcionamento
 O programa pode ser acessado por duas formas diferentes, ou pelo prompt de
 comandos, ou por sua interface gráfica. 
@@ -21,7 +21,7 @@ Já a versão com interface gráfica possuí 6 janelas principais:
 4. Client Manager™: para cadastrar os clientes.
 5. Bill Manager™: serve para criar as comandas e acessá-las para edição.
 6. Bill Editor™: é a tela de edição das comandas, permitindo a adição dos itens.
-___
+
 ## Como rodar o Biller™
 Além de você poder compilar o código você mesmo, também estão disponíveis
 arquivos _.jar_ prontos para uso!
@@ -37,7 +37,7 @@ Ou então se preferir usar a versão do terminal, rode o comando:
 ```bash
 java -jar ./path/to/Biller.jar --terminal
 ```
-___
+
 ## Salvamento dos dados
 Todos os dados salvos ficaram armazenados na pasta 'data' em um
 formato de arquivo incompatível com outros programas e altamente
